@@ -19,3 +19,17 @@ How use it:
 
 create a directory named lib in trunk directory with your directories concert and cplex.
 
+Problems:
+
+<h3>I.Easy formulation</h3>
+<ul>
+<li>1. Flow ressources problem</li>
+<li>2. Time-indexed</li>
+</ul>
+
+
+<h3>II. Hard Formulation</h3> 
+<ul>
+<li>1. Not allowed configurations (cut generation)</li>
+<li>2. Allowed configurations (row generation)</li>
+</ul>
