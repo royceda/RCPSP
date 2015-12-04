@@ -13,3 +13,9 @@ http://www-01.ibm.com/support/knowledgecenter/SSSA5P_12.6.0/ilog.odms.cplex.help
 
 [4] IBM Knowledge Center, La classe IloCplex
 http://www-01.ibm.com/support/knowledgecenter/SSSA5P_12.6.0/ilog.odms.cplex.help/refcppcplex/html/classes/IloCplex.html?lang=fr
+
+
+How use it:
+
+create a directory named lib in trunk directory with your directories concert and cplex.
+
