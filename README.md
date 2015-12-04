@@ -21,7 +21,7 @@ create a directory named lib in trunk directory with your directories concert an
 
 Problems:
 
-<h3>I.Easy formulation<h3>
+<h3>I.Easy formulation</h3>
 <ul>
 <li>1. Flow ressources problem</li>
 <li>2. Time-indexed</li>
