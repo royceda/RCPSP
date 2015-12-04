@@ -21,10 +21,15 @@ create a directory named lib in trunk directory with your directories concert an
 
 Problems:
 
-I.Easy formulation
-1. Flow ressources problem
-2. Time-indexed
+<h3>I.Easy formulation<h3>
+<ul>
+<li>1. Flow ressources problem</li>
+<li>2. Time-indexed</li>
+</ul>
 
-II. Hard Formulation 
-1. Not allowed configurations (cut generation)
-2. Allowed configurations (row generation)
+
+<h3>II. Hard Formulation</h3> 
+<ul>
+<li>1. Not allowed configurations (cut generation)</li>
+<li>2. Allowed configurations (row generation)</li>
+</ul>
