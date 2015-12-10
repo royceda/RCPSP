@@ -1,21 +1,21 @@
 SYSTEM     =  x86-64_osx
 LIBFORMAT  = static_pic
 CPLEXDIR   = ./lib/cplex
-CONCERTDIR = ./lib/concert
-
+CONCERTDIR =  ./lib/concert
 CPLEXBINDIR   = $(CPLEXDIR)/bin/$(SYSTEM)
 CPLEXLIBDIR   = $(CPLEXDIR)/lib/$(SYSTEM)/$(LIBFORMAT)
 CONCERTLIBDIR = $(CONCERTDIR)/lib/$(SYSTEM)/$(LIBFORMAT)
-
 CPLEXFLAGS = -stdlib=libstdc++ -I$(CPLEXDIR)/include   -I$(CONCERTDIR)/include -L$(CPLEXLIBDIR) -lilocplex -lcplex -L$(CONCERTLIBDIR) -lconcert -lm -m64 -lpthread
 CC = g++
 CFLAGS = -std=c++11 -O2 -Wall -ansi -pedantic -DIL_STD
-DEBUG = -pg -g -Wall -ansi -pedantic -DIL_STD
-OBJECTS= ./main.o
+DEBUG = -pg -g -Wall -pedantic -DIL_STD
+OBJECTS = parser.o main.o 
 
 exec : $(OBJECTS)
 	$(CC) $(CFLAGS) -o exe $(OBJECTS) $(CPLEXFLAGS)
-.cpp.o :
-	$(CC) $(CFLAGS) $(CPLEXFLAGS) -c ./main.cpp -o $@
+main.o : main.cpp 
+	$(CC) $(CFLAGS) $(CPLEXFLAGS) -c main.cpp 
+parser.o : parser.cpp parser.h
+	$(CC) $(CFLAGS) $(CPLEXFLAGS) -c parser.cpp 	
 clean :
 	rm -f $(OBJECTS) exe
