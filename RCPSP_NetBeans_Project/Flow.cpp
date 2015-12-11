@@ -28,7 +28,6 @@ void Flow::solve(Parser& p) {
         x[i] = IloNumVarArray(env, p.jobs(), 0, 1, ILOBOOL);
         S[i] = IloNumVar(env, 0, p.getHorizon() - p.durationsVector()[i], ILOINT);
         for (int j = 0; j < p.jobs(); j++) {
-            f[i][j] = IloNumVarArray(env, p.jobs());
             for (int k = 0; k < p.nOfRes(); k++) {
 	      f[i][j][k] = IloNumVar(env, 0, IloInfinity, ILOINT);
             }
@@ -40,7 +39,7 @@ void Flow::solve(Parser& p) {
     //model.add(f);
 
     /**Objectif**/
-    IloObjective obj(env, S[p.jobs() - 1], IloObjective::Minimize, "OBJ");
+    IloObjective obj (env, S[p.jobs() - 1], IloObjective::Minimize, "OBJ");
 
 
     
