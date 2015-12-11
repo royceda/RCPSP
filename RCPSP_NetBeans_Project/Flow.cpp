@@ -1,7 +1,11 @@
 #include <ilcplex/ilocplex.h>
+#include <iostream>
 #include "Flow.h"
 
 ILOSTLBEGIN
+
+typedef IloArray< IloArray<IloNumArray>> NumMatrix;
+
 
 Flow::Flow() {
 }
@@ -21,17 +25,16 @@ void Flow::solve(Parser& p) {
     /**Variables**/
     IloArray<IloNumVarArray> x(env, p.jobs());
     IloNumVarArray S(env, p.jobs());
-    IloArray<IloArray <IloNumVarArray> > f(env, p.jobs());
+    //    IloArray<IloArray <IloNumVarArray> > f(env, p.jobs());
 
-    
+
+    NumMatrix f(env, p.jobs());
+ 
     for (int i = 0; i < p.jobs(); i++) {
         x[i] = IloNumVarArray(env, p.jobs(), 0, 1, ILOBOOL);
         S[i] = IloNumVar(env, 0, p.getHorizon() - p.durationsVector()[i], ILOINT);
         for (int j = 0; j < p.jobs(); j++) {
-            f[i][j] = IloNumVarArray(env, p.jobs());
-            for (int k = 0; k < p.nOfRes(); k++) {
-	      f[i][j][k] = IloNumVar(env, 0, IloInfinity, ILOINT);
-            }
+	  f[i][j] = IloNumVarArray(env, p.nOfRes(), 0, IloInfinity, ILOINT); 
         }
     }
 
