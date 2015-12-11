@@ -49,9 +49,14 @@
 //
 //
 
+#include <ilcplex/ilocplex.h>
 #include "Parser.h"
+#include "Flow.h"
+
 
 int main(int argc, char **argv){
     Parser* p = new Parser("./j120.sm/j1201_1.sm");
+    Flow* fl = new Flow();
+    fl->solve(*p);
     return 0;
 }
