@@ -79,6 +79,7 @@ void Flow::solve(Parser& p) {
                 model.add(e3 >= ((-getBigM() + (getBigM() * x[i][j])) + x[i][j] * bound));
             }
         }
+        
         for (int k = 0; k < p.nOfRes(); k++) {
             for (int i = 0; i < p.jobs(); i++) {
                 IloExpr e(env);
@@ -87,13 +88,13 @@ void Flow::solve(Parser& p) {
                     e += f[i][j][k];
                     ee += f[j][i][k];
                 }
-
                 model.add(e == p.reqJobsMach()[i][k]);
                 model.add(ee == p.reqJobsMach()[i][k]);
                 e.end();
                 ee.end();
             }
         }
+        
         for (int i = 0; i < p.jobs(); i++) {
             for (int j = 0; j < p.jobs(); j++) {
                 for (int k = 0; k < p.nOfRes(); k++) {
@@ -104,12 +105,12 @@ void Flow::solve(Parser& p) {
                 }
             }
         }
-
+        
         IloCplex cplex(model);
 
         cplex.solve();
         
-        cout << cplex.getObjValue();
+        cout <<"\n\nSOL= " <<cplex.getObjValue()<<"\n\n";
         
         cplex.exportModel("test.lp");
         env.end();
