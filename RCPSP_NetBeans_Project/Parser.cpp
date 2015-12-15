@@ -102,8 +102,11 @@ Parser::Parser(const string & filename) {
                 tmpRequest.push_back(tmpR);
             }
             tmpRequest.pop_back();
-            _reqJobsMach.push_back(tmpRequest);
+            _reqJobsMach.push_back(tmpRequest);	    
         }
+
+
+	
         for(ite =0 ; ite<jobs(); ite++){
             cout <<ite<<" request = ";
             for(i = 0; i< _reqJobsMach[ite].size(); i++)
@@ -134,6 +137,14 @@ Parser::Parser(const string & filename) {
         for(int j =1; j<=_nOfRes; j++){
             cout<<"RESj : "<<resAvail()[j-1]<<"\n";
         }
+
+	for(unsigned int i = 0; i < _nOfRes; i++){
+	  _reqJobsMach[0] += resAvail()[i];
+	  _reqJobsMach[jobs()-1] += resAvail()[i];
+
+
+	}
+	
         file.close();
     } else
         cerr << "Impossible to open the file\n";
