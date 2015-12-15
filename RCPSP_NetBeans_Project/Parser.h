@@ -78,7 +78,7 @@ public:
      * 
      * @return the requests of the jobs per machine
      */
-    vector<vector<int> > reqJobsMach();
+    vector <vector<int> > reqJobsMach();
     
     /**
      * 
@@ -91,7 +91,7 @@ public:
      * @return the availibilities per ressource
      */
     vector<int> resAvail();
-    
+
     
 private:
     /*
