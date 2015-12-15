@@ -139,8 +139,8 @@ Parser::Parser(const string & filename) {
         }
 
 	for(unsigned int i = 0; i < _nOfRes; i++){
-	  _reqJobsMach[0] += resAvail()[i];
-	  _reqJobsMach[jobs()-1] += resAvail()[i];
+	  _reqJobsMach[0] = _reqJobsMach[0] + resAvail()[i];
+	  _reqJobsMach[jobs()-1] =  _reqJobsMach[jobs()-1] + resAvail()[i];
 
 
 	}
