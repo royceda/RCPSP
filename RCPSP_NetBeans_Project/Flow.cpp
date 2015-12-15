@@ -12,8 +12,10 @@ using namespace  std;
 Flow::Flow() {
 }
 
+
 Flow::Flow(int M) : _bigM(M) {
 }
+
 
 int Flow::getBigM() {
     return _bigM;

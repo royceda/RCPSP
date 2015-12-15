@@ -30,7 +30,7 @@ Parser::Parser(const string & filename) {
         getline(file, line);
         ssline.clear();
         ssline.str(line);
-        ssline >> tmp >> tmp >> tmp >> tmp>>_jobs;
+        ssline >> tmp >> tmp >> tmp >> tmp >>_jobs;
         std::cout << "jobs : " << _jobs << "\n";
         getline(file, line);
         ssline.clear();
