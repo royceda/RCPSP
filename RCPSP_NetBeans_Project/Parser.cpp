@@ -65,8 +65,8 @@ Parser::Parser(const string & filename) {
             ssline >> tmpInt>>tmpInt>>tmpInt;
             tmpVector.clear();
             while(ssline){
-                ssline >> tmpSuc;
-                tmpVector.push_back(tmpSuc);
+                ssline >> tmpSuc ;
+                tmpVector.push_back(tmpSuc - 1);
             }
             tmpVector.pop_back();
             _sucVector.push_back(tmpVector);

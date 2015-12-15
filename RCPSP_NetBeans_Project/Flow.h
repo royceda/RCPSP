@@ -20,6 +20,8 @@ public:
     
     void solve(Parser& p);
     
+    void heurSolve(Parser& p);
+    
 private:
     int _bigM;
     
