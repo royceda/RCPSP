@@ -56,6 +56,7 @@ void Flow::solve(Parser& p) {
         IloObjective obj(env, S[p.jobs() - 1], IloObjective::Minimize, "OBJ");
 
         /**Contraintes**/
+	
         for (unsigned int i = 0; i < p.jobs(); i++) {
 	  if (p.sucVector()[i].size() > 0) {
 	    for (int j = 0; j < p.sucVector()[i].size(); j++) {
@@ -68,6 +69,8 @@ void Flow::solve(Parser& p) {
 	    IloExpr e1 = x[i][j] + x[j][i];
 	    model.add(e1 <= 1);
 	  }
+
+	  /* transitivité */
 	  for (unsigned int j = 0; j < p.jobs(); j++) {
 	    for (unsigned int k = 0; k < p.jobs(); k++) {
 	      IloExpr e2 = x[i][j] + x[j][k] - x[i][k];
@@ -80,6 +83,7 @@ void Flow::solve(Parser& p) {
 	  }
         }
 
+	/*flow sum*/
         for (unsigned int k = 0; k < p.nOfRes(); k++) {
 	  for (unsigned int i = 0; i < p.jobs(); i++) {
 	    IloExpr e(env);
@@ -97,9 +101,9 @@ void Flow::solve(Parser& p) {
         }
 	
 
-	/*flow*/
-        for (unsigned int i = 0; i < p.jobs(); i++) {
-	  for (unsigned int j = 0; j < p.jobs(); j++) {
+	/*flow min*/
+        for (unsigned int i = 0; i < p.jobs()-1; i++) {
+	  for (unsigned int j = 1; j < p.jobs(); j++) {
 	    for (unsigned int k = 0; k < p.nOfRes(); k++) {
 	      if (p.reqJobsMach()[i][k] < p.reqJobsMach()[j][k])
 		model.add(f[i][j][k] <= (p.reqJobsMach()[i][k] * x[i][j]));

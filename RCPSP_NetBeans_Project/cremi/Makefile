@@ -2,8 +2,8 @@ SYSTEM     = x86-64_sles10_4.1
 LIBFORMAT  = static_pic
 
 
-CPLEXDIR      = /opt/local/CPLEX_Studio/cplex/lib
-CONCERTDIR    = /opt/local/CPLEX_Studio/concert/lib
+CPLEXDIR      = /opt/local/CPLEX_Studio/cplex
+CONCERTDIR    = /opt/local/CPLEX_Studio/concert
 
 
 CPLEXBINDIR   = $(CPLEXDIR)/bin/$(SYSTEM)
