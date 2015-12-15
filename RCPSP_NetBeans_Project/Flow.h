@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   Flow.h
  * Author: yoannjvr
  *
@@ -15,19 +15,19 @@ class Flow{
 public:
     Flow();
     Flow(int M);
+
     
     int getBigM();
-    
     void solve(Parser& p);
+
     
     void heurSolve(Parser& p);
-    
+
 private:
     int _bigM;
-    
+
 };
 
 
 
 #endif	/* FLOW_H */
-

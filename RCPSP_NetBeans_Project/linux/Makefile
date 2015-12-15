@@ -8,13 +8,6 @@ CONCERTDIR    = /home/da/M2/lib_/concert
 CPLEXBINDIR   = $(CPLEXDIR)/bin/$(SYSTEM)
 CPLEXLIBDIR   = $(CPLEXDIR)/lib/$(SYSTEM)/$(LIBFORMAT)
 CONCERTLIBDIR = $(CONCERTDIR)/lib/$(SYSTEM)/$(LIBFORMAT)
-<<<<<<< HEAD
-CPLEXFLAGS = -stdlib=libstdc++ -I$(CPLEXDIR)/include   -I$(CONCERTDIR)/include -L$(CPLEXLIBDIR) -lilocplex -lcplex -L$(CONCERTLIBDIR) -lconcert -lm -m64 -lpthread
-CC = g++
-CFLAGS = -std=c++11 -O2 -Wall -ansi -pedantic -DIL_STD
-DEBUG = -pg -g -Wall -pedantic -DIL_STD
-OBJECTS = parser.o flow.o main.o 
-=======
 
 CPLEXFLAGS    =  -I$(CPLEXDIR)/include   -I$(CONCERTDIR)/include -L$(CPLEXLIBDIR) -lilocplex -lcplex -L$(CONCERTLIBDIR) -lconcert -lm -m32 -lpthread
 
@@ -25,23 +18,15 @@ DEBUG   = -pg -g -Wall -ansi -pedantic -DIL_STD
 OBJECTS = Parser.o Flow.o main.o 
 
 
->>>>>>> 423babadd53938b0cb677b434b950534bb5efac1
 
 exec : $(OBJECTS)
 	$(CC) $(CFLAGS) -o exe $(OBJECTS) $(CPLEXFLAGS)
 main.o : main.cpp 
 	$(CC) $(CFLAGS) $(CPLEXFLAGS) -c main.cpp 
-<<<<<<< HEAD
-flow.o : flow.cpp flow.h
-	$(CC) $(CFLAGS) $(CPLEXFLAGS) -c flow.cpp
-parser.o : parser.cpp parser.h
-	$(CC) $(CFLAGS) $(CPLEXFLAGS) -c parser.cpp 	
-=======
 Parser.o : Parser.cpp Parser.h
 	$(CC) $(CFLAGS) $(CPLEXFLAGS) -c Parser.cpp 	
 Flow.o : Flow.cpp Flow.h
 	$(CC) $(CFLAGS) $(CPLEXFLAGS) -c Flow.cpp 	
 
->>>>>>> 423babadd53938b0cb677b434b950534bb5efac1
 clean :
 	rm -f $(OBJECTS) exe

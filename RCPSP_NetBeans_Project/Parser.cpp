@@ -1,9 +1,9 @@
 #include "Parser.h"
 #include <cstdio>
 #include <cstdlib>
+#include <iostream>
 #include <string>
 #include <fstream>
-#include <iostream>
 #include <sstream>
 
 using namespace std;
@@ -30,7 +30,7 @@ Parser::Parser(const string & filename) {
         getline(file, line);
         ssline.clear();
         ssline.str(line);
-        ssline >> tmp >> tmp >> tmp >> tmp>>_jobs;
+        ssline >> tmp >> tmp >> tmp >> tmp >>_jobs;
         std::cout << "jobs : " << _jobs << "\n";
         getline(file, line);
         ssline.clear();
@@ -47,7 +47,7 @@ Parser::Parser(const string & filename) {
         ssline.clear();
         ssline.str(line);
         ssline >> tmp >> tmp >> _rDate >> _dDate >> _tardCost>>_MPM_time;
-        cout << "releaseDate = " << _rDate << " dueDate = " << _dDate << " tardCost = " << _tardCost << " MPMTIME = " << _MPM_time << "\n";
+        std::cout << "releaseDate = " << _rDate << " dueDate = " << _dDate << " tardCost = " << _tardCost << " MPMTIME = " << _MPM_time << "\n";
         ite = 0;
         while (ite < 3) {
             getline(file, line);
@@ -72,19 +72,19 @@ Parser::Parser(const string & filename) {
             _sucVector.push_back(tmpVector);
             ite++;
         }
-        int i =0; 
+        int i =0;
         for(ite =0 ; ite<jobs(); ite++){
             cout <<ite<<" suc = ";
             for(i = 0; i< _sucVector[ite].size(); i++)
                 cout <<_sucVector[ite][i]<<" ";
             cout<<"\n";
         }
-        
+
         //Getting the durations and the requests of the jobs per machine
         ite=0;
         while(ite<4){
             getline(file, line);
-            ite++;        
+            ite++;
         }
         int tmpDur;
         int tmpR;
@@ -110,14 +110,14 @@ Parser::Parser(const string & filename) {
                 cout <<_reqJobsMach[ite][i]<<" ";
             cout<<"\n";
         }
-        
-        
+
+
         ite = 0;
         while (ite<3){
             getline(file, line);
-            ite++;        
+            ite++;
         }
-        
+
         //Getting the number of ressources and their availibilities
         getline(file, line);
         ssline.clear();
@@ -140,7 +140,7 @@ Parser::Parser(const string & filename) {
 }
 
 /**
- * 
+ *
  * @return the number of projects
  */
 int Parser::projects() {
@@ -148,7 +148,7 @@ int Parser::projects() {
 }
 
 /**
- * 
+ *
  * @return horizon
  */
 int Parser::getHorizon() {
@@ -156,7 +156,7 @@ int Parser::getHorizon() {
 }
 
 /**
- * 
+ *
  * @return the number of jobs
  */
 int Parser::jobs() {
@@ -164,7 +164,7 @@ int Parser::jobs() {
 }
 
 /**
- * 
+ *
  * @return the release dates
  */
 int Parser::rDate() {
@@ -172,7 +172,7 @@ int Parser::rDate() {
 }
 
 /**
- * 
+ *
  * @return the due date
  */
 int Parser::dueDate() {
@@ -180,7 +180,7 @@ int Parser::dueDate() {
 }
 
 /**
- * 
+ *
  * @return Cost of tardness
  */
 int Parser::tardCost() {
@@ -188,15 +188,15 @@ int Parser::tardCost() {
 }
 
 /**
- * 
- * @return 
+ *
+ * @return
  */
 int Parser::MPMTime() {
     return _MPM_time;
 }
 
 /**
- * 
+ *
  * @return the succersors vector per jobs
  */
 vector<vector<int> > Parser::sucVector() {
@@ -204,7 +204,7 @@ vector<vector<int> > Parser::sucVector() {
 }
 
 /**
- * 
+ *
  * @return the duration vector per jobs
  */
 vector<int> Parser::durationsVector() {
@@ -212,7 +212,7 @@ vector<int> Parser::durationsVector() {
 }
 
 /**
- * 
+ *
  * @return the requests of the jobs per machine
  */
 vector<vector<int> > Parser::reqJobsMach() {
@@ -220,7 +220,7 @@ vector<vector<int> > Parser::reqJobsMach() {
 }
 
 /**
- * 
+ *
  * @return the number of ressources
  */
 int Parser::nOfRes() {
@@ -228,7 +228,7 @@ int Parser::nOfRes() {
 }
 
 /**
- * 
+ *
  * @return the availibilities per ressource
  */
 vector<int> Parser::resAvail() {
