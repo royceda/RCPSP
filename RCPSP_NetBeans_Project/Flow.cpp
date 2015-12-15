@@ -1,11 +1,13 @@
 #include <ilcplex/ilocplex.h>
 #include <iostream>
+
 #include "Flow.h"
 
 ILOSTLBEGIN
 
-typedef IloArray< IloArray<IloNumArray>> NumMatrix;
+typedef IloArray< IloArray<IloNumArray> > NumMatrix;
 
+using namespace  std;
 
 Flow::Flow() {
 }
@@ -29,12 +31,12 @@ void Flow::solve(Parser& p) {
 
 
     NumMatrix f(env, p.jobs());
- 
+
     for (int i = 0; i < p.jobs(); i++) {
         x[i] = IloNumVarArray(env, p.jobs(), 0, 1, ILOBOOL);
         S[i] = IloNumVar(env, 0, p.getHorizon() - p.durationsVector()[i], ILOINT);
         for (int j = 0; j < p.jobs(); j++) {
-	  f[i][j] = IloNumVarArray(env, p.nOfRes(), 0, IloInfinity, ILOINT); 
+	  f[i][j] = IloNumVarArray(env, p.nOfRes(), 0, IloInfinity, ILOINT);
         }
     }
 
@@ -46,33 +48,33 @@ void Flow::solve(Parser& p) {
     IloObjective obj(env, S[p.jobs() - 1], IloObjective::Minimize, "OBJ");
 
 
-    
+
     /**Contraintes**/
     for (int i = 0; i < p.jobs(); i++) {
       for (int j = 0; j < p.sucVector()[i].size(); j++) {
-	IloExpr e0 = x[i][p.sucVector()[i][j]];
+        IloExpr e0 = x[i][p.sucVector()[i][j]];
 	model.add(e0 == 1);
-      }
-      
-      for (int j = 0; j < p.jobs(); j++) {
+}
+
+for (int j = 0; j < p.jobs(); j++) {
 	IloExpr e1 = x[i][j] + x[j][i];
-	model.add(e1 <= 1);
+  model.add(e1 <= 1);
 	for (int k = 0; k < p.jobs(); k++) {
-	  IloExpr e2 = x[i][j] + x[j][k] - 1;
+    IloExpr e2 = x[i][j] + x[j][k] - 1;
 	  model.add(x[i][k] >= e2);
-	}
+  }
 	IloExpr e3 = -getBigM() + (p.durationsVector()[i] + getBigM()) * x[i][j];
-	model.add(S[j] - S[i] >= e3);
+  model.add(S[j] - S[i] >= e3);
       }
     }
 
-      for (int k = 0; k < p.nOfRes(); k++) {
+    for (int k = 0; k < p.nOfRes(); k++) {
 	for(int i = 0; i < p.jobs(); i++){
-	  IloExpr e;
+    IloExpr e;
 	  IloExpr ee;
-	  for(int j = 0; j < p.jobs(); j++){
+    for(int j = 0; j < p.jobs(); j++){
 	    e += f[i][j][k];
-	    ee += f[j][i][k];
+      ee += f[j][i][k];
 	  }
 	  model.add(e == p.reqJobsMach()[i][k]);
 	  model.add(ee == p.reqJobsMach()[i][k]);
@@ -89,7 +91,7 @@ void Flow::solve(Parser& p) {
 	  }
 	}
       }
-      
+
     IloCplex cplex(model);
     cplex.exportModel("test.lp");
 
