@@ -56,65 +56,75 @@ void Flow::solve(Parser& p) {
         IloObjective obj(env, S[p.jobs() - 1], IloObjective::Minimize, "OBJ");
 
         /**Contraintes**/
-        for (int i = 0; i < p.jobs(); i++) {
-            if (p.sucVector()[i].size() > 0) {
-                for (int j = 0; j < p.sucVector()[i].size(); j++) {
-                    IloExpr e0 = x[i][p.sucVector()[i][j]];
-                    model.add(e0 == 1);
-                }
-            }
-
-            for (int j = i + 1; j < p.jobs(); j++) {
-                IloExpr e1 = x[i][j] + x[j][i];
-                model.add(e1 <= 1);
-            }
-            for (int j = 0; j < p.jobs(); j++) {
-                for (int k = 0; k < p.jobs(); k++) {
-                    IloExpr e2 = x[i][j] + x[j][k] - x[i][k];
-                    model.add(e2 <= 1);
-                }
-                int bound;
-                bound = p.durationsVector()[i];
-                IloExpr e3 = S[j] - S[i];
-                model.add(e3 >= ((-getBigM() + (getBigM() * x[i][j])) + x[i][j] * bound));
-            }
+        for (unsigned int i = 0; i < p.jobs(); i++) {
+	  if (p.sucVector()[i].size() > 0) {
+	    for (int j = 0; j < p.sucVector()[i].size(); j++) {
+	      IloExpr e0 = x[i][p.sucVector()[i][j]];
+	      model.add(e0 == 1);
+	    }
+	  }
+	  
+	  for (unsigned int j = i + 1; j < p.jobs(); j++) {
+	    IloExpr e1 = x[i][j] + x[j][i];
+	    model.add(e1 <= 1);
+	  }
+	  for (unsigned int j = 0; j < p.jobs(); j++) {
+	    for (unsigned int k = 0; k < p.jobs(); k++) {
+	      IloExpr e2 = x[i][j] + x[j][k] - x[i][k];
+	      model.add(e2 <= 1);
+	    }
+	    int bound;
+	    bound = p.durationsVector()[i];
+	    IloExpr e3 = S[j] - S[i];
+	    model.add(e3 >= ((-getBigM() + (getBigM() * x[i][j])) + x[i][j] * bound));
+	  }
         }
-        for (int k = 0; k < p.nOfRes(); k++) {
-            for (int i = 0; i < p.jobs(); i++) {
-                IloExpr e(env);
-                IloExpr ee(env);
-                for (int j = 0; j < p.jobs(); j++) {
-                    e += f[i][j][k];
-                    ee += f[j][i][k];
-                }
-
-                model.add(e == p.reqJobsMach()[i][k]);
-                model.add(ee == p.reqJobsMach()[i][k]);
-                e.end();
-                ee.end();
-            }
+	
+	
+        for (unsigned int k = 0; k < p.nOfRes(); k++) {
+	  for (unsigned int i = 0; i < p.jobs(); i++) {
+	    IloExpr e(env);
+	    IloExpr ee(env);
+	    for (int j = 0; j < p.jobs(); j++) {
+	      e += f[i][j][k];
+	      ee += f[j][i][k];
+	    }
+	    
+	    model.add(e == p.reqJobsMach()[i][k]);
+	    model.add(ee == p.reqJobsMach()[i][k]);
+	    e.end();
+	    ee.end();
+	  }
         }
-        for (int i = 0; i < p.jobs(); i++) {
-            for (int j = 0; j < p.jobs(); j++) {
-                for (int k = 0; k < p.nOfRes(); k++) {
-                    if (p.reqJobsMach()[i][k] < p.reqJobsMach()[j][k])
-                        model.add(f[i][j][k] <= (p.reqJobsMach()[i][k] * x[i][j]));
-                    else
-                        model.add(f[i][j][k] <= (p.reqJobsMach()[j][k] * x[i][j]));
-                }
-            }
-        }
+	
 
+	/*flow*/
+        for (unsigned int i = 0; i < p.jobs(); i++) {
+	  for (unsigned int j = 0; j < p.jobs(); j++) {
+	    for (unsigned int k = 0; k < p.nOfRes(); k++) {
+	      if (p.reqJobsMach()[i][k] < p.reqJobsMach()[j][k])
+		model.add(f[i][j][k] <= (p.reqJobsMach()[i][k] * x[i][j]));
+	      else
+		model.add(f[i][j][k] <= (p.reqJobsMach()[j][k] * x[i][j]));
+	    }
+	  }
+        }
+	
         IloCplex cplex(model);
 
         cplex.solve();
         
         cout << cplex.getObjValue();
         
-        cplex.exportModel("test.lp");
-        env.end();
-    }    catch (IloException& e) {
-        cerr << "ERROR : " << e << "\n";
-    }
 
+	cout << cplex.getObjValue() << endl;
+	
+        cplex.exportModel("test.lp");
+	env.end();
+	
+    }
+    catch (IloException& e){       
+      cerr << "ERROR : "<< e<<"\n";
+    }
+    
 }
