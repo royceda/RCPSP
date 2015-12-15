@@ -106,13 +106,15 @@ void Flow::solve(Parser& p) {
         }
 
         IloCplex cplex(model);
-        
+
         cplex.solve();
+        
+        cout << cplex.getObjValue();
+        
         cplex.exportModel("test.lp");
-    env.end();
-    }
-    catch (IloException& e){       
-        cerr << "ERROR : "<< e<<"\n";
+        env.end();
+    }    catch (IloException& e) {
+        cerr << "ERROR : " << e << "\n";
     }
 
 }
