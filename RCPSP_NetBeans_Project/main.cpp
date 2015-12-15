@@ -55,7 +55,7 @@
 
 
 int main(int argc, char **argv){
-    Parser* p = new Parser("./j120.sm/j1202_4.sm");
+    Parser* p = new Parser("./j120.sm/perso.sm");
     Flow* fl = new Flow();
     fl->heurSolve(*p);
     fl->solve(*p);
