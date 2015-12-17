@@ -52,6 +52,7 @@
 #include <ilcplex/ilocplex.h>
 #include "Parser.h"
 #include "Flow.h"
+#include "Time_indexed.hpp"
 
 
 int main(int argc, char **argv){
@@ -59,5 +60,10 @@ int main(int argc, char **argv){
     Flow* fl = new Flow();
     fl->heurSolve(*p);
     fl->solve(*p);
+    
+
+    Time_indexed *t = new Time_indexed();
+    t->solve(*p);
+
     return 0;
 }
