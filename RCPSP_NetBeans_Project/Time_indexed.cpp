@@ -35,7 +35,7 @@ void Time_indexed::solve(Parser& p) {
     
     /**initialization */
     for( int i = 0; i <n; i++){
-      y[i] = IloNumVarArray(env, 1000, 0, 5, ILOBOOL);
+      y[i] = IloNumVarArray(env, T, 0, 1, ILOBOOL);
 
     }
   
