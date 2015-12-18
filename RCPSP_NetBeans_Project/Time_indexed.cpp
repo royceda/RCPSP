@@ -49,7 +49,7 @@ void Time_indexed::solve(Parser& p) {
   
     cout << "obj : DONE !!!!" << endl;  
     IloObjective obj(env, e0, IloObjective::Minimize, "OBJ"); //sum
-
+    model.add(obj);
 
     
     
