@@ -43,7 +43,7 @@ void Time_indexed::solve(Parser& p) {
   }
   
   IloObjective obj(env, eO, IloObjective::Minimize, "OBJ"); //sum
-  
+  model.add(obj);
   
   /**Contraintes**/
   IloExpr e1(env);
@@ -75,7 +75,7 @@ void Time_indexed::solve(Parser& p) {
 
 
   IloCplex cplex(model);
-  
+  cplex.exportModel("test.lp");
   cplex.solve();
   
   cout <<"\n\nSOL= " <<cplex.getObjValue()<<"\n\n";
@@ -83,7 +83,7 @@ void Time_indexed::solve(Parser& p) {
   
   cout << cplex.getObjValue() << endl;
   
-  cplex.exportModel("test.lp");
+  
   env.end();
   
   } catch (IloException& e){       

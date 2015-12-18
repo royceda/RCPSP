@@ -135,7 +135,7 @@ Parser::Parser(const string & filename) {
         _nOfRes --;
         cout << _nOfRes <<"\n";
         for(int j =1; j<=_nOfRes; j++){
-            cout<<"RESj : "<<resAvail()[j-1]<<"\n";
+            cout<<"RES"<<j<<" : "<<resAvail()[j-1]<<"\n";
         }
 
 	for(unsigned int i = 0; i < _nOfRes; i++){
