@@ -67,49 +67,48 @@ void Time_indexed::solve(Parser& p) {
     /*Precedence*/
     
     for(unsigned int i = 0; i < n; i++){
-        IloExpr e2(env);
+      IloExpr e2(env);
         
-        //cout << "ct2 : creating i = "  << i << endl;
+      //cout << "ct2 : creating i = "  << i << endl;
                         
-        //parcours des successeur de i
-        for(unsigned int j = 0; j < p.sucVector()[i].size(); j++){
-            int succ = p.sucVector()[i][j];
+      //parcours des successeur de i
+      for(unsigned int j = 0; j < p.sucVector()[i].size(); j++){
+	int succ = p.sucVector()[i][j];
             
-            //cout << "ct2 : succ = "  << succ << endl;
-            for( int t = 0; t < T; t++){
-                e2 += (y[succ][t] - y[i][t]) * t; 
-            }
-        }
-        model.add(e2 >= p.durationsVector()[i]); 
+	//cout << "ct2 : succ = "  << succ << endl;
+	for( int t = 0; t < T; t++){
+	  e2 += (y[succ][t] - y[i][t]) * t; 
+	}
+      }
+      model.add(e2 >= p.durationsVector()[i]); 
     }
  
     cout << "ct2 : DONE !!!!" << endl;  
     
     
     /*Ressources*/    
-    
     for(int t = 0; t < T; t++){
-        for(int k = 0; k < r; k++){ //forall k and t
+      for(int k = 0; k < r; k++){ //forall k and t
             
             
-            IloExpr e3(env);
-            IloExpr e4(env);
-            for(int i = 0; i < n; i++){
+	IloExpr e3(env);
+	IloExpr e4(env);
+	for(int i = 0; i < n; i++){
                 
-                //cout << "ct3 : creating i = "  << i<< endl;  
+	  //cout << "ct3 : creating i = "  << i<< endl;  
                 
-                int init = t - p.durationsVector()[i] + 1;
-                if( init >= 0){
-                    for(int r = init; r < t;  r++){
-                        //expr de somme en r
-                        e3 +=  y[i][r];
-                    }
-                    e4 += p.reqJobsMach()[i][k] * e3;
+	  int init = t - p.durationsVector()[i] + 1;
+	  if( init >= 0){
+	    for(int r = init; r < t;  r++){
+	      //expr de somme en r
+	      e3 +=  y[i][r];
+	    }
+	    e4 += p.reqJobsMach()[i][k] * e3;
                     
-                }
-            }
-            model.add(e4 <= p.resAvail()[k]);
-        }
+	  }
+	}
+	model.add(e4 <= p.resAvail()[k]);
+      }
     }
     
     cout << "ct3 : DONE !!!!\n" << endl;  
