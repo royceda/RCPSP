@@ -24,13 +24,13 @@ IloObjective Time_indexed::objective(IloEnv &env){
     
   IloExpr e0(env);
   for( int t = 0; t < _T; t++){
-    e0 =  y[_n-1][t] * t;
+    e0 +=  y[_n-1][t] * t;
   }
      
   cout << "obj : DONE !!!!" << endl;  
   IloObjective obj(env, e0, IloObjective::Minimize, "OBJ"); //sum
      
-  //model.add(obj);
+  model.add(obj);
   return obj;   
 }
 
@@ -39,39 +39,42 @@ IloObjective Time_indexed::objective(IloEnv &env){
 
 void Time_indexed::addConstraints(Parser &p){
   /*Ordonancé le job i qu'une fois*/
-  IloExpr e1(env);
-  for(unsigned int i = 0; i < _n; i++){
-    for(unsigned int t = 0; t < _T; t++){
+ 
+ for(unsigned int i = 0; i < _n; i++){
+      IloExpr e1(env);
+      for(unsigned int t = 0; t < _T; t++){
       e1 += y[i][t];
     }
     model.add(e1 == 1);
   }
-  cout << "ct1 : DONE !!!!" << endl;  
+  cout << "ct1 : DONE !!!!"<<endl;  
     
       
   /*Precedence*/
- for(unsigned int i = 0; i < _n; i++){
-     //parcours des successeur de i
-     for(unsigned int j = 0; j < p.sucVector()[i].size(); j++){
-         IloExpr e2(env);
-         int succ = p.sucVector()[i][j];
-         for( int t = 0; t < _T; t++){
-             e2 += (y[succ][t] - y[i][t]) * t; 
-         }
-         model.add(e2 >= p.durationsVector()[i]); 
-     }
- }
+  for(unsigned int i = 0; i < _n; i++){
+      //parcours des successeur de i
+      for(unsigned int j = 0; j < p.sucVector()[i].size(); j++){
+          IloExpr e2(env);
+          int succ = p.sucVector()[i][j];
+          for( int t = 0; t < _T; t++){
+              e2 += (y[succ][t] - y[i][t]) * t; 
+          }
+          model.add(e2 >= p.durationsVector()[i]); 
+      }
+  }
   cout << "ct2 : DONE !!!!" << endl;  
   
     
   /*Ressources*/    
-  for(int t = t; t < _T; t++){
+ for(int t = 0; t < _T; t++){
     for(int k = 0; k < _r; k++){ //forall k and t          
       IloExpr e3(env);
       IloExpr e4(env);
+    
       for(int i = 0; i < _n; i++){
           //cout << "ct3 : creating i = "  << i<< endl;  
           int init = t - p.durationsVector()[i] + 1;
+        
           if( init >= 0){
               for(int r = init; r < t;  r++){
                   //expr de somme en r
@@ -83,7 +86,7 @@ void Time_indexed::addConstraints(Parser &p){
       model.add(e4 <= p.resAvail()[k]);
     }
   }
-  cout << "ct2 : DONE !!!!" << endl;  
+  cout << "ct3 : DONE !!!!" << endl;  
   
   
   
@@ -105,8 +108,8 @@ void Time_indexed::solve(Parser& p) {
     cout << "\ninit : DONE !!!!" << endl;  
 
     /**Objectives**/
-    IloObjective obj = objective(env);
-    model.add(obj);
+   objective(env);
+   
       
     /**Contraintes**/
     addConstraints(p);
