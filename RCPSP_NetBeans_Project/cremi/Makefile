@@ -17,7 +17,7 @@ CPLEXFLAGS    =  -I$(CPLEXDIR)/include   -I$(CONCERTDIR)/include -L$(CPLEXLIBDIR
 CC      = g++ -O0
 CFLAGS  = -O2 -Wall -ansi -pedantic -DIL_STD
 DEBUG   = -pg -g -Wall -ansi -pedantic -DIL_STD
-OBJECTS = Parser.o Flow.o main.o 
+OBJECTS = Parser.o Flow.o Time_indexed.o main.o 
 
 
 
@@ -29,6 +29,11 @@ Parser.o : Parser.cpp Parser.h
 	$(CC) $(CFLAGS) $(CPLEXFLAGS) -c Parser.cpp 	
 Flow.o : Flow.cpp Flow.h
 	$(CC) $(CFLAGS) $(CPLEXFLAGS) -c Flow.cpp 	
+
+Time_indexed.o : Time_indexed.cpp Time_indexed.h
+        $(CC) $(CFLAGS) $(CPLEXFLAGS) -c Time_indexed.cpp       
+
+
 
 clean :
 	rm -f $(OBJECTS) exe
