@@ -112,7 +112,7 @@ void Time_indexed::solve(Parser& p) {
     env.end();
     
   } catch (IloException& e){       
-    //cerr << "ERROR : "<< e<<"\n";
+    cerr << "ERROR : "<< e<<"\n";
   }
   
 }
