@@ -21,6 +21,10 @@ public:
     
     void solve(Parser& p);
     
+protected:
+    void addConstraints(Parser &p);
+    
+    
 private:
     IloEnv env;
     IloModel model;
