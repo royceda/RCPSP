@@ -30,7 +30,7 @@ Parser.o : Parser.cpp Parser.h
 Flow.o : Flow.cpp Flow.h
 	$(CC) $(CFLAGS) $(CPLEXFLAGS) -c Flow.cpp 	
 
-Time_indexed.o : Time_indexed.cpp Time_indexed.h
+Time_indexed.o : Time_indexed.cpp Time_indexed.hpp
         $(CC) $(CFLAGS) $(CPLEXFLAGS) -c Time_indexed.cpp       
 
 
