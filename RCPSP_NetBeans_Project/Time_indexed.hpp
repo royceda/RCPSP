@@ -24,7 +24,7 @@ public:
 protected:
     IloObjective objective(IloEnv &env);
     void addConstraints(Parser &p);
-    
+    void addFeasibleConstraints(Parser &p);
     
 private:
     IloEnv env;

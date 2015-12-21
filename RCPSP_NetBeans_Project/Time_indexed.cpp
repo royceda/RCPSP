@@ -50,24 +50,26 @@ void Time_indexed::addConstraints(Parser &p){
     
       
   /*Precedence*/
-  for(unsigned int i = 0; i < _n; i++){
-    IloExpr e2(env);
+ for(unsigned int i = 0; i < _n; i++){
+    
     //cout << "ct2 : creating i = "  << i << endl;
     //parcours des successeur de i
     for(unsigned int j = 0; j < p.sucVector()[i].size(); j++){
-      int succ = p.sucVector()[i][j];
-      //cout << "ct2 : succ = "  << succ << endl;
-      for( int t = 0; t < _T; t++){
-	e2 += (y[succ][t] - y[i][t]) * t; 
-      }
+        IloExpr e2(env);
+        int succ = p.sucVector()[i][j];
+        //cout << "ct2 : succ = "  << succ << endl;
+        for( int t = 0; t < _T; t++){
+            e2 += (y[succ][t] - y[i][t]) * t; 
+        }
+        model.add(e2 >= p.durationsVector()[i]); 
     }
-    model.add(e2 >= p.durationsVector()[i]); 
+    
   }
   cout << "ct2 : DONE !!!!" << endl;  
     
     
   /*Ressources*/    
-  for(int t = 0; t < _T; t++){
+  for(int t = t; t < _T; t++){
     for(int k = 0; k < _r; k++){ //forall k and t          
       IloExpr e3(env);
       IloExpr e4(env);
@@ -85,10 +87,19 @@ void Time_indexed::addConstraints(Parser &p){
       model.add(e4 <= p.resAvail()[k]);
     }
   }
+  cout << "ct2 : DONE !!!!" << endl;  
+  
+  
+    /*def y*/
+    //done !!
 }
 
 
+void addFeasibleConstraints(Parser &p){
 
+
+
+}
 
 
 
@@ -104,17 +115,10 @@ void Time_indexed::solve(Parser& p) {
       
     /**Contraintes**/
     addConstraints(p);
-    
-    
-    /*def y*/
-    //done !!
-    
+        
     /**Config realisable**/
-    
-    addFeasibleConstraints(p);
-    
-    
-    
+    //addFeasibleConstraints(p);
+        
     cout << "solve: " << endl;
     /**Solve it*/
 
