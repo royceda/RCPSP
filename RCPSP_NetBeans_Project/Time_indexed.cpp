@@ -21,11 +21,9 @@ void Time_indexed::solve(Parser& p) {
     IloEnv env;
     IloModel model(env);
     
-   
-    
     int n = p.jobs(); // number of jobs
     int T = p.getHorizon(); //discret time
-    int r = p.nOfRes(); //number of sources
+    int r  = p.nOfRes(); //number of sources
     
     
     /**Variables**/
@@ -41,6 +39,7 @@ void Time_indexed::solve(Parser& p) {
   
     cout << "\ninit : DONE !!!!" << endl;  
   
+    
     /**Objectives**/
     IloExpr e0(env);
     for( int t = 0; t < 1; t++){
@@ -54,6 +53,7 @@ void Time_indexed::solve(Parser& p) {
     
     
     /**Contraintes**/
+    /*Ordonancé le job i qu'une fois*/
     IloExpr e1(env);
     for(unsigned int i = 0; i < n; i++){
       for(unsigned int t = 0; t < T; t++){
@@ -67,12 +67,14 @@ void Time_indexed::solve(Parser& p) {
     for(unsigned int i = 0; i < n; i++){
       IloExpr e2(env);
       for(unsigned int j = 0; j < n; j++){
-	for( int t = 0; t < T; t++){
-	  e2 += (y[i][t] - y[j][t]) * t;
-	}
+          if(p.sucVector()[i][j] != 0){
+              for( int t = 0; t < T; t++){
+                  e2 += (y[i][t] - y[j][t]) * t;
+              }
+          }
+          model.add(e2 >= p.durationsVector()[j]); 
       }
-      model.add(e2 >= p.durationsVector()[j]); 
-      }
+    }
     
 
     
@@ -112,7 +114,7 @@ void Time_indexed::solve(Parser& p) {
     env.end();
     
   } catch (IloException& e){       
-    cerr << "ERROR : "<< e<<"\n";
+    //cerr << "ERROR : "<< e<<"\n";
   }
   
 }
