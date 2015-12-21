@@ -65,13 +65,18 @@ void Time_indexed::solve(Parser& p) {
     cout << "ct1 : DONE !!!!" << endl;  
     
     /*Precedence*/
- for(unsigned int i = 0; i < n; i++){
+    for(unsigned int i = 0; i < n; i++){
         IloExpr e2(env);
+        
+        cout << "ct2 : creating i = "  << i << endl;
+                        
+        //parcours des successeur de i
         for(unsigned int j = 0; j < n; j++){
             int succ = p.sucVector()[i][j];
             
+            //cout << "ct2 : succ = "  << succ << endl;
             for( int t = 0; t < T; t++){
-                e2 += (y[i][t] - y[succ][t]) * t; 
+               // e2 += (y[i][t] - y[succ][t]) * t; 
             }
         }
         model.add(e2 >= p.durationsVector()[i]); 
@@ -89,14 +94,18 @@ void Time_indexed::solve(Parser& p) {
             IloExpr e4(env);
             for(int i = 0; i < n; i++){
                 
+                cout << "ct3 : creating i = "  << i<< endl;  
+                
                 int init = t - p.durationsVector()[i] + 1;
                 for(int r = init; r < t;  r++){
                     //expr de somme en r
                     e3 +=  y[i][r];
                 }
                 e4 += p.reqJobsMach()[i][k] * e3;
+                
             }
             model.add(e4 <= p.resAvail()[k]);
+
         }
     }
     
