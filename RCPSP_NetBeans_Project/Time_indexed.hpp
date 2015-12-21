@@ -13,12 +13,21 @@
 
 class Time_indexed{
 public:
-	Time_indexed();
-
-	void solve(Parser& p);
-
+    Time_indexed();
+    Time_indexed(Parser &p, IloEnv &env);
+    IloObjective objective(IloEnv &env);
+    
+    
+    
+    void solve(Parser& p);
+    
 private:
-
+    //IloEnv *env;
+    IloModel model;
+    IloArray <IloNumVarArray> y;
+    int _n; 
+    int _T;
+    int _r  ;
 
 };
 
