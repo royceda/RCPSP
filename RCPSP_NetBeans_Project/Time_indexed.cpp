@@ -12,7 +12,7 @@ using namespace  std;
 
 Time_indexed::Time_indexed(){}
 
-Time_indexed::Time_indexed(Parser &p, IloEnv & env): _n(p.jobs()), _T(p.getHorizon()), _r(p.nOfRes()), model(env), y(env, _n){
+Time_indexed::Time_indexed(Parser &p): _n(p.jobs()), _T(p.getHorizon()), _r(p.nOfRes()), model(env), y(env, _n){
      
     for( int i = 0; i <_n; i++){
         y[i] = IloNumVarArray(env, _T, 0, 1, ILOBOOL);
@@ -30,6 +30,7 @@ IloObjective Time_indexed::objective(IloEnv &env){
      cout << "obj : DONE !!!!" << endl;  
      IloObjective obj(env, e0, IloObjective::Minimize, "OBJ"); //sum
      
+     //model.add(obj);
      return obj;   
 }
 
@@ -39,7 +40,7 @@ void Time_indexed::solve(Parser& p) {
   try{
 
       /**Main Classes**/
-      IloEnv env;
+      //IloEnv env;
       //IloModel model(env);
       
       /*
@@ -57,6 +58,7 @@ void Time_indexed::solve(Parser& p) {
       y[i] = IloNumVarArray(env, _T, 0, 1, ILOBOOL);
     }
     */
+      
       
       
       
