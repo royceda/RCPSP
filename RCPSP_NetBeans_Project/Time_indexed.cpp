@@ -54,16 +54,13 @@ void Time_indexed::addConstraints(Parser &p){
   for(unsigned int i = 0; i < _n; i++){
       //parcours des successeur de i
       IloExpr e2(env);
-      IloExpr e17(env);
-      for(unsigned int j = 0; j < p.sucVector()[i].size(); j++){
-         
+      for(unsigned int j = 0; j < p.sucVector()[i].size(); j++){ 
           int succ = p.sucVector()[i][j];
           for( int t = 1; t < _T; t++){ // sur le poly ca commence à 1
               if(succ !=  i)
                   e2 += (y[succ][t] - y[i][t]) * t; 
           }
-      }
-      
+      } 
       model.add(e2 >= p.durationsVector()[i]);  //on a parfois 0 >= 5
   }
   cout << "ct2 : DONE !!!!" << endl;  
@@ -73,25 +70,25 @@ void Time_indexed::addConstraints(Parser &p){
   
     
   /*Ressources*/    
- for(int t = 1; t < _T; t++){
-    for(int k = 0; k < _r; k++){ //forall k and t          
-      IloExpr e3(env);
-      IloExpr e4(env);
-    
-      for(int i = 0; i < _n; i++){
-          //cout << "ct3 : creating i = "  << i<< endl;  
-          int init = t - p.durationsVector()[i] + 1;
-        
-          if( init >= 0){
-              for(int r = init; r < t;  r++){
-                  //expr de somme en r
-                  e3 +=  y[i][r];
+ 
+  for(int k = 0; k < _r; k++){ //forall k and t          
+      for(int t = 1; t < _T; t++){
+          
+          IloExpr e4(env);
+          
+          for(int i = 0; i < _n; i++){
+              IloExpr e3(env);
+              int init = t - p.durationsVector()[i] + 1;
+              
+              if( init >= 0){
+                  for(int r = init; r < t;  r++){
+                      e3 +=  y[i][r];
+                  }
+                  e4 += p.reqJobsMach()[i][k] * e3;
               }
-              e4 += p.reqJobsMach()[i][k] * e3;
           }
+          model.add(e4 <= p.resAvail()[k]);          
       }
-      model.add(e4 <= p.resAvail()[k]);
-    }
   }
   cout << "ct3 : DONE !!!!" << endl;  
   
