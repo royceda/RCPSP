@@ -71,7 +71,7 @@ void Time_indexed::solve(Parser& p) {
         cout << "ct2 : creating i = "  << i << endl;
                         
         //parcours des successeur de i
-        for(unsigned int j = 0; j < n; j++){
+        for(unsigned int j = 0; j < p.sucVector()[i].size(); j++){
             int succ = p.sucVector()[i][j];
             
             //cout << "ct2 : succ = "  << succ << endl;
@@ -97,15 +97,16 @@ void Time_indexed::solve(Parser& p) {
                 cout << "ct3 : creating i = "  << i<< endl;  
                 
                 int init = t - p.durationsVector()[i] + 1;
-                for(int r = init; r < t;  r++){
-                    //expr de somme en r
-                    e3 +=  y[i][r];
+                if( init >= 0){
+                    for(int r = init; r < t;  r++){
+                        //expr de somme en r
+                        e3 +=  y[i][r];
+                    }
+                    e4 += p.reqJobsMach()[i][k] * e3;
+                    
                 }
-                e4 += p.reqJobsMach()[i][k] * e3;
-                
             }
             model.add(e4 <= p.resAvail()[k]);
-
         }
     }
     
