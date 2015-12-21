@@ -54,16 +54,22 @@ void Time_indexed::addConstraints(Parser &p){
   for(unsigned int i = 0; i < _n; i++){
       //parcours des successeur de i
       IloExpr e2(env);
+      IloExpr e17(env);
       for(unsigned int j = 0; j < p.sucVector()[i].size(); j++){
+         
           int succ = p.sucVector()[i][j];
           for( int t = 1; t < _T; t++){ // sur le poly ca commence à 1
-              e2 += (y[succ][t] - y[i][t]) * t; 
+              if(succ !=  i)
+                  e2 += (y[succ][t] - y[i][t]) * t; 
           }
-          //cout << e2 << endl;
       }
+      
       model.add(e2 >= p.durationsVector()[i]);  //on a parfois 0 >= 5
   }
   cout << "ct2 : DONE !!!!" << endl;  
+  
+  
+  
   
     
   /*Ressources*/    
