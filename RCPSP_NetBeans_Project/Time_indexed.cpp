@@ -23,7 +23,7 @@ Time_indexed::Time_indexed(Parser &p): _n(p.jobs()), _T(p.getHorizon()), _r(p.nO
 IloObjective Time_indexed::objective(IloEnv &env){
     
   IloExpr e0(env);
-  for( int t = 0; t < 1; t++){
+  for( int t = 0; t < _T; t++){
     e0 =  y[_n-1][t] * t;
   }
      
@@ -51,22 +51,18 @@ void Time_indexed::addConstraints(Parser &p){
       
   /*Precedence*/
  for(unsigned int i = 0; i < _n; i++){
-    
-    //cout << "ct2 : creating i = "  << i << endl;
-    //parcours des successeur de i
-    for(unsigned int j = 0; j < p.sucVector()[i].size(); j++){
-        IloExpr e2(env);
-        int succ = p.sucVector()[i][j];
-        //cout << "ct2 : succ = "  << succ << endl;
-        for( int t = 0; t < _T; t++){
-            e2 += (y[succ][t] - y[i][t]) * t; 
-        }
-        model.add(e2 >= p.durationsVector()[i]); 
-    }
-    
-  }
+     //parcours des successeur de i
+     for(unsigned int j = 0; j < p.sucVector()[i].size(); j++){
+         IloExpr e2(env);
+         int succ = p.sucVector()[i][j];
+         for( int t = 0; t < _T; t++){
+             e2 += (y[succ][t] - y[i][t]) * t; 
+         }
+         model.add(e2 >= p.durationsVector()[i]); 
+     }
+ }
   cout << "ct2 : DONE !!!!" << endl;  
-    
+  
     
   /*Ressources*/    
   for(int t = t; t < _T; t++){
@@ -74,15 +70,15 @@ void Time_indexed::addConstraints(Parser &p){
       IloExpr e3(env);
       IloExpr e4(env);
       for(int i = 0; i < _n; i++){
-	//cout << "ct3 : creating i = "  << i<< endl;  
-	int init = t - p.durationsVector()[i] + 1;
-	if( init >= 0){
-	  for(int r = init; r < t;  r++){
-	    //expr de somme en r
-	    e3 +=  y[i][r];
-	  }
-	  e4 += p.reqJobsMach()[i][k] * e3;
-	}
+          //cout << "ct3 : creating i = "  << i<< endl;  
+          int init = t - p.durationsVector()[i] + 1;
+          if( init >= 0){
+              for(int r = init; r < t;  r++){
+                  //expr de somme en r
+                  e3 +=  y[i][r];
+              }
+              e4 += p.reqJobsMach()[i][k] * e3;
+          }
       }
       model.add(e4 <= p.resAvail()[k]);
     }
@@ -90,16 +86,15 @@ void Time_indexed::addConstraints(Parser &p){
   cout << "ct2 : DONE !!!!" << endl;  
   
   
+  
+  
+  
     /*def y*/
     //done !!
 }
 
 
-void addFeasibleConstraints(Parser &p){
-
-
-
-}
+void addFeasibleConstraints(Parser &p){}
 
 
 
@@ -132,7 +127,7 @@ void Time_indexed::solve(Parser& p) {
     env.end();
     
   } catch (IloException& e){       
-    //cerr << "ERROR : "<< e<<"\n";
+    cerr << "ERROR : "<< e<<"\n";
   }
   
 }

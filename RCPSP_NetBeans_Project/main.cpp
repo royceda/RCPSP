@@ -56,8 +56,8 @@
 
 
 int main(int argc, char **argv){
-//  Parser* p = new Parser("j120.sm/j1201_2.sm");
-  Parser* p = new Parser("perso.sm");
+Parser* p = new Parser("j120.sm/j1201_2.sm");
+  //Parser* p = new Parser("perso.sm");
   
   //    Flow* fl = new Flow();
   //fl->heurSolve(*p);
