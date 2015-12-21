@@ -15,13 +15,14 @@ class Time_indexed{
 public:
     Time_indexed();
     Time_indexed(Parser &p);
-    IloObjective objective(IloEnv &env);
+    
     
     
     
     void solve(Parser& p);
     
 protected:
+    IloObjective objective(IloEnv &env);
     void addConstraints(Parser &p);
     
     
@@ -29,6 +30,9 @@ private:
     IloEnv env;
     IloModel model;
     IloArray <IloNumVarArray> y;
+    
+ 
+    
     int _n; 
     int _T;
     int _r  ;

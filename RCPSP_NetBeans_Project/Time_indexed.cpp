@@ -109,9 +109,11 @@ void Time_indexed::solve(Parser& p) {
     /*def y*/
     //done !!
     
-    /**************************/
-    /* Configuration realisables*/
-    /**************************/
+    /**Config realisable**/
+    
+    addFeasibleConstraints(p);
+    
+    
     
     cout << "solve: " << endl;
     /**Solve it*/
@@ -120,8 +122,6 @@ void Time_indexed::solve(Parser& p) {
     cplex.solve();
     
     cout <<"\n\nSOL= " <<cplex.getObjValue()<<"\n\n";
-    
-    
     cout << cplex.getObjValue() << endl;
     
     cplex.exportModel("test.lp");
