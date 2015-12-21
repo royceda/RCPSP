@@ -15,10 +15,6 @@ class Time_indexed{
 public:
     Time_indexed();
     Time_indexed(Parser &p);
-    
-    
-    
-    
     void solve(Parser& p);
     
 protected:
