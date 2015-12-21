@@ -62,36 +62,45 @@ void Time_indexed::solve(Parser& p) {
       model.add(e1 == 1);
     }
     
+    cout << "ct1 : DONE !!!!" << endl;  
     
     /*Precedence*/
-    for(unsigned int i = 0; i < n; i++){
-      IloExpr e2(env);
-      for(unsigned int j = 0; j < n; j++){
-          if(p.sucVector()[i][j] != 0){
-              for( int t = 0; t < T; t++){
-                  e2 += (y[i][t] - y[j][t]) * t;
-              }
-          }
-          model.add(e2 >= p.durationsVector()[j]); 
-      }
+ for(unsigned int i = 0; i < n; i++){
+        IloExpr e2(env);
+        for(unsigned int j = 0; j < n; j++){
+            int succ = p.sucVector()[i][j];
+            
+            for( int t = 0; t < T; t++){
+                e2 += (y[i][t] - y[succ][t]) * t; 
+            }
+        }
+        model.add(e2 >= p.durationsVector()[i]); 
     }
+ 
+    cout << "ct2 : DONE !!!!" << endl;  
     
-
     
     /*Ressources*/    
     for(int t = 0; t < T; t++){
-      for(int k = 0; k < r; k++){
-	IloExpr e3(env);
-	for(int i = 0; i < n; i++){
-	  for(int j = 0; j < t; j++){
-	    e3 += p.reqJobsMach()[i][k] * y[i][j];
-	  }
-	  model.add(e3 <= p.resAvail()[k]);
-	}
-      }
+        for(int k = 0; k < r; k++){ //forall k and t
+            
+            
+            IloExpr e3(env);
+            IloExpr e4(env);
+            for(int i = 0; i < n; i++){
+                
+                int init = t - p.durationsVector()[i] + 1;
+                for(int r = init; r < t;  r++){
+                    //expr de somme en r
+                    e3 +=  y[i][r];
+                }
+                e4 += p.reqJobsMach()[i][k] * e3;
+            }
+            model.add(e4 <= p.resAvail()[k]);
+        }
     }
     
-    cout << "Constraints : DONE !!!!\n" << endl;  
+    cout << "ct3 : DONE !!!!\n" << endl;  
     
     
     /*def y*/
@@ -99,7 +108,7 @@ void Time_indexed::solve(Parser& p) {
     
     
     
-    
+    cout << "solve: " << endl;
     /**Solve it*/
 
     IloCplex cplex(model);
