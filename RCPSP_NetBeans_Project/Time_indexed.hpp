@@ -25,7 +25,7 @@ protected:
 private:
     IloEnv env;
     IloModel model;
-    IloArray <IloNumVarArray> y;
+    IloArray <IloArray<IloNumVar> > y;
     
  
     
