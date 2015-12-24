@@ -99,7 +99,8 @@ void Time_indexed::addConstraints(Parser &p){
     //done !!
 }
 
-void createfeasibleConfig(Parser &p, int j){
+
+vector<int> Time_indexed::createFeasibleConfig(Parser &p, int j){
     //Parcours des jobs
     //test 1:  test de ressource
     //test 2: verif de chemin dans le graphe
@@ -107,19 +108,63 @@ void createfeasibleConfig(Parser &p, int j){
 }
 
 
-void addFeasibleConstraints(Parser &p){
-    /*Contrainte 1*/
+/*
+vector<int> Time_indexed::createFeasibleConfig(Parser &p){
+    vector<int> vect;
+    return vect;
+}
+*/
+
+void Time_indexed::addFeasibleConstraints(Parser &p){
+    //init xi
+    for( int i = 0; i < feasibleConfig.size(); i++){
+        xi[i] = IloArray<IloNumVar> (env, _T);
+        for(int t = 0; t < _T; t++){
+            xi[i][t] = IloNumVar (env, 0,1, ILOBOOL);
+        }
+    }
     
-    for(int i = 0; i <   feasibleConf.size(); i++){
-        
+    /*Contrainte 1*/
+    for(int i; i < _n; i++){
+        IloExpr e1(env);
+        vector<int> feasibleConf(createFeasibleConfig(p, i));
+        for(int l = 0; l <   feasibleConf.size(); l++){
+            for(int t = 0; t < _T; t++){
+                e1 += xi[l][t] ;
+            }
+        }
+        model.add(e1 == p.durationsVector()[i]);
+        e1.end();        
     }
     
     
     /*Contrainte 2*/
-    
+        for(int t = 0; t < _T; t++){
+            IloExpr e2(env);
+
+            for(int l = 0; l <   feasibleConfig.size(); l++){
+                e2 += xi[l][t];
+            }
+            model.add(e2 <= 1);
+            e2.end();
+        }
     
     /*Contrainte 3*/
-
+    for(int t = 0; t < _T; t++){
+        for(int i = 0; i < _n; i++){
+            IloExpr e3(env);
+            vector<int> feasibleConf(createFeasibleConfig(p,i));
+            
+            for(int l = 0; l<feasibleConf.size(); l++){
+                e3 = xi[i][t] - xi[l][t-1];
+            }
+            
+            model.add(e3 <= y[i][t]);
+            e3.end();
+        }
+    }
+    
+    
 }
 
 

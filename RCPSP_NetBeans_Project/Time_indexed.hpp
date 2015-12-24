@@ -17,6 +17,9 @@ public:
     Time_indexed(Parser &p);
     void solve(Parser& p);
     
+ 
+    
+    
 protected:
     IloObjective objective(IloEnv &env);
     void addConstraints(Parser &p);
@@ -32,15 +35,23 @@ protected:
    * @param p
    * @param j
    */
-    void createFeasibleConfig(Parser &p, int j);
-    
+    vector<int> createFeasibleConfig(Parser &p,  int j);
+  
+    /**
+     * creation de toute les config realisable
+     * @param p
+     * @return 
+     */
+    void createFeasibleConfig(Parser &p);
     
 private:
     IloEnv env;
     IloModel model;
     IloArray <IloArray<IloNumVar> > y;
-    
-    vector<int>  feasibleConf;
+    IloArray <IloArray<IloNumVar> > xi;
+   
+    //all feasible config
+    vector<int> feasibleConfig;
     
     int _n; 
     int _T;
