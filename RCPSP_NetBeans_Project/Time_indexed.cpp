@@ -67,48 +67,60 @@ void Time_indexed::addConstraints(Parser &p){
           e2.end(); 
         } 
     }
-    cout << "ct2 : DONE !!!!" << endl;  
-
-
-
-
-    
-  /*Ressources*/    
-
-  for(int k = 0; k < _r; k++){ //forall k and t          
-    for(int t = 0; t < _T; t++){
-
-      IloExpr e4(env);
-
-      for(int i = 0; i < _n; i++){
-        IloExpr e3(env);
-        int init = t - p.durationsVector()[i] + 1;
-
-        if(init < 0){
-          init = 0;
-        }
-        for(int r = init; r <= t;  r++){
-          e3 +=  y[i][r];
-        }
-        e4 += p.reqJobsMach()[i][k] * e3;
-        e3.end();
-      }
-      model.add(e4 <= p.resAvail()[k]);  
-      e4.end();        
-    }
-  }
-  cout << "ct3 : DONE !!!!" << endl;  
-  
-  
-  
-  
-  
+ cout << "ct2 : DONE !!!!" << endl;  
+ 
+ /*Ressources*/    
+ 
+ for(int k = 0; k < _r; k++){ //forall k and t          
+     for(int t = 0; t < _T; t++){
+         
+         IloExpr e4(env);
+         
+         for(int i = 0; i < _n; i++){
+             IloExpr e3(env);
+             int init = t - p.durationsVector()[i] + 1;
+             
+             if(init < 0){
+                 init = 0;
+             }
+             for(int r = init; r <= t;  r++){
+                 e3 +=  y[i][r];
+             }
+             e4 += p.reqJobsMach()[i][k] * e3;
+             e3.end();
+         }
+         model.add(e4 <= p.resAvail()[k]);  
+         e4.end();        
+     }
+ }
+ cout << "ct3 : DONE !!!!" << endl; 
+ 
     /*def y*/
     //done !!
 }
 
+void createfeasibleConfig(Parser &p, int j){
+    //Parcours des jobs
+    //test 1:  test de ressource
+    //test 2: verif de chemin dans le graphe
+    
+}
 
-void addFeasibleConstraints(Parser &p){}
+
+void addFeasibleConstraints(Parser &p){
+    /*Contrainte 1*/
+    
+    for(int i = 0; i <   feasibleConf.size(); i++){
+        
+    }
+    
+    
+    /*Contrainte 2*/
+    
+    
+    /*Contrainte 3*/
+
+}
 
 
 

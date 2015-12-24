@@ -20,14 +20,27 @@ public:
 protected:
     IloObjective objective(IloEnv &env);
     void addConstraints(Parser &p);
+  
+    /**
+     * Penser a supp la contrainte de ressouce
+     * @param p
+     */
     void addFeasibleConstraints(Parser &p);
+  
+    /**
+   * creation d'une config realisable contenant j
+   * @param p
+   * @param j
+   */
+    void createFeasibleConfig(Parser &p, int j);
+    
     
 private:
     IloEnv env;
     IloModel model;
     IloArray <IloArray<IloNumVar> > y;
     
- 
+    vector<int>  feasibleConf;
     
     int _n; 
     int _T;

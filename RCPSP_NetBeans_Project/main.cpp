@@ -5,7 +5,6 @@
 
 
 int main(int argc, char **argv){
-  //Parser* p = new Parser("perso.sm");
   Parser* p = new Parser("j120.sm/perso.sm");
   //Parser* p = new Parser("perso.sm");
   
@@ -18,6 +17,7 @@ int main(int argc, char **argv){
     for(int j =0; j< p->jobs(); j++)
     cout << p->sucVector()[i][j] << endl;
   */
+  //Parser* p1 = new Parser("perso.sm");
   Time_indexed *t = new Time_indexed(*p);
   t->solve(*p);
   
