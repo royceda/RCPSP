@@ -17,17 +17,41 @@ public:
     Time_indexed(Parser &p);
     void solve(Parser& p);
     
+ 
+    
+    
 protected:
     IloObjective objective(IloEnv &env);
     void addConstraints(Parser &p);
+  
+    /**
+     * Penser a supp la contrainte de ressouce
+     * @param p
+     */
     void addFeasibleConstraints(Parser &p);
+  
+    /**
+   * creation d'une config realisable contenant j
+   * @param p
+   * @param j
+   */
+    vector<int> createFeasibleConfig(Parser &p,  int j);
+  
+    /**
+     * creation de toute les config realisable
+     * @param p
+     * @return 
+     */
+    void createFeasibleConfig(Parser &p);
     
 private:
     IloEnv env;
     IloModel model;
     IloArray <IloArray<IloNumVar> > y;
-    
- 
+    IloArray <IloArray<IloNumVar> > xi;
+   
+    //all feasible config
+    vector<int> feasibleConfig;
     
     int _n; 
     int _T;

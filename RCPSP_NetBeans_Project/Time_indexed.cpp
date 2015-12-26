@@ -67,48 +67,105 @@ void Time_indexed::addConstraints(Parser &p){
           e2.end(); 
         } 
     }
-    cout << "ct2 : DONE !!!!" << endl;  
-
-
-
-
-    
-  /*Ressources*/    
-
-  for(int k = 0; k < _r; k++){ //forall k and t          
-    for(int t = 0; t < _T; t++){
-
-      IloExpr e4(env);
-
-      for(int i = 0; i < _n; i++){
-        IloExpr e3(env);
-        int init = t - p.durationsVector()[i] + 1;
-
-        if(init < 0){
-          init = 0;
-        }
-        for(int r = init; r <= t;  r++){
-          e3 +=  y[i][r];
-        }
-        e4 += p.reqJobsMach()[i][k] * e3;
-        e3.end();
-      }
-      model.add(e4 <= p.resAvail()[k]);  
-      e4.end();        
-    }
-  }
-  cout << "ct3 : DONE !!!!" << endl;  
-  
-  
-  
-  
-  
+ cout << "ct2 : DONE !!!!" << endl;  
+ 
+ /*Ressources*/    
+ 
+ for(int k = 0; k < _r; k++){ //forall k and t          
+     for(int t = 0; t < _T; t++){
+         
+         IloExpr e4(env);
+         
+         for(int i = 0; i < _n; i++){
+             IloExpr e3(env);
+             int init = t - p.durationsVector()[i] + 1;
+             
+             if(init < 0){
+                 init = 0;
+             }
+             for(int r = init; r <= t;  r++){
+                 e3 +=  y[i][r];
+             }
+             e4 += p.reqJobsMach()[i][k] * e3;
+             e3.end();
+         }
+         model.add(e4 <= p.resAvail()[k]);  
+         e4.end();        
+     }
+ }
+ cout << "ct3 : DONE !!!!" << endl; 
+ 
     /*def y*/
     //done !!
 }
 
 
-void addFeasibleConstraints(Parser &p){}
+vector<int> Time_indexed::createFeasibleConfig(Parser &p, int j){
+    //Parcours des jobs
+    //test 1:  test de ressource
+    //test 2: verif de chemin dans le graphe
+    
+}
+
+
+/*
+vector<int> Time_indexed::createFeasibleConfig(Parser &p){
+    vector<int> vect;
+    return vect;
+}
+*/
+
+void Time_indexed::addFeasibleConstraints(Parser &p){
+    //init xi
+    for( int i = 0; i < feasibleConfig.size(); i++){
+        xi[i] = IloArray<IloNumVar> (env, _T);
+        for(int t = 0; t < _T; t++){
+            xi[i][t] = IloNumVar (env, 0,1, ILOBOOL);
+        }
+    }
+    
+    /*Contrainte 1*/
+    for(int i; i < _n; i++){
+        IloExpr e1(env);
+        vector<int> feasibleConf(createFeasibleConfig(p, i));
+        for(int l = 0; l <   feasibleConf.size(); l++){
+            for(int t = 0; t < _T; t++){
+                e1 += xi[l][t] ;
+            }
+        }
+        model.add(e1 == p.durationsVector()[i]);
+        e1.end();        
+    }
+    
+    
+    /*Contrainte 2*/
+        for(int t = 0; t < _T; t++){
+            IloExpr e2(env);
+
+            for(int l = 0; l <   feasibleConfig.size(); l++){
+                e2 += xi[l][t];
+            }
+            model.add(e2 <= 1);
+            e2.end();
+        }
+    
+    /*Contrainte 3*/
+    for(int t = 0; t < _T; t++){
+        for(int i = 0; i < _n; i++){
+            IloExpr e3(env);
+            vector<int> feasibleConf(createFeasibleConfig(p,i));
+            
+            for(int l = 0; l<feasibleConf.size(); l++){
+                e3 = xi[i][t] - xi[l][t-1];
+            }
+            
+            model.add(e3 <= y[i][t]);
+            e3.end();
+        }
+    }
+    
+    
+}
 
 
 
