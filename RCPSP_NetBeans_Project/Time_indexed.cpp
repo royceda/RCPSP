@@ -137,11 +137,11 @@ void Time_indexed::solve(Parser& p) {
     cout <<"\n\nSOL= " <<cplex.getObjValue()<<"\n\n";
     cout << cplex.getObjValue() << endl;
     
-    for (int i = 0; i < _n; i++) {
-      for(int t = 0; t<_T; t++){
-        cout << "y[" << i << "]["<<t<<"] = " << cplex.getValue(y[i][t]) << "\n";
-      }
-    }
+    // for (int i = 0; i < _n; i++) {
+    //   for(int t = 0; t<_T; t++){
+    //     cout << "y[" << i << "]["<<t<<"] = " << cplex.getValue(y[i][t]) << "\n";
+    //   }
+    // }
 
     cplex.exportModel("test.lp");
     env.end();
