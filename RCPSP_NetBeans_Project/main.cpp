@@ -5,17 +5,16 @@
 
 
 int main(int argc, char **argv){
-<<<<<<< HEAD
+
   //Parser* p = new Parser("perso.sm");
-  Parser* p = new Parser("j30.sm/j3010_9.sm");
-=======
+  //  Parser* p = new Parser("j30.sm/j3010_9.sm");
   Parser* p = new Parser("j120.sm/perso.sm");
->>>>>>> 3cbc323fb07283ced28e5aa8ba6c3269d4d80612
+  
   //Parser* p = new Parser("perso.sm");
   
-  //Flow* fl = new Flow();
-  //fl->heurSolve(*p);
-  //fl->solve(*p);
+  Flow* fl = new Flow();
+  fl->heurSolve(*p);
+  fl->solve(*p);
   
   /*
     for(int i = 0; i< p->jobs(); i++)
@@ -23,8 +22,8 @@ int main(int argc, char **argv){
     cout << p->sucVector()[i][j] << endl;
   */
   //Parser* p1 = new Parser("perso.sm");
-  Time_indexed *t = new Time_indexed(*p);
-  t->solve(*p);
+  //Time_indexed *t = new Time_indexed(*p);
+  //t->solve(*p);
   
   return 0;
 }

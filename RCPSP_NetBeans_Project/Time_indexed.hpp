@@ -45,10 +45,11 @@ protected:
     void createFeasibleConfig(Parser &p);
     
 private:
-    IloEnv env;
-    IloModel model;
-    IloArray <IloArray<IloNumVar> > y;
-    IloArray <IloArray<IloNumVar> > xi;
+  IloEnv env;
+  IloModel model;
+  IloRangeArray constraints; 
+  IloArray <IloArray<IloNumVar> > y;
+  IloArray <IloArray<IloNumVar> > xi;
    
     //all feasible config
     vector<int> feasibleConfig;
