@@ -67,6 +67,14 @@ void ConfigInt::addConstraints(Parser &p){
   }
   
 
+  config F = createConfig();
+  for(int k= 0; k < F.size(); k++){
+    int i = F[k].x;
+    int j = F[k].y;
+
+    constraints.add(x[i][j] >= 1);
+  }
+
 
 }
 
