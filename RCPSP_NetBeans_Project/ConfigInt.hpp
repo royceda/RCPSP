@@ -11,6 +11,16 @@
 #include "Parser.h"
 #include <ilcplex/ilocplex.h>
 
+
+struct conf{
+  int x;
+  int y;
+};
+
+typedef vector<conf> config;
+
+
+
 class ConfigInt{
 public:
   ConfigInt();
@@ -24,7 +34,7 @@ protected:
   IloObjective objective();
   void addConstraints(Parser &p);
   
-  
+  config createConfig();
   
 private:
   IloEnv env;
@@ -33,6 +43,8 @@ private:
   IloArray <IloArray<IloNumVar> > x;
   IloArray<IloNumVar> S;
   
+
+
   
   int _bigM;
   int _n; 

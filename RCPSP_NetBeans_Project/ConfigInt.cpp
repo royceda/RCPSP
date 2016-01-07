@@ -10,6 +10,9 @@ typedef IloArray< IloArray<IloNumArray> > NumMatrix;
 using namespace  std;
 
 
+
+
+
 ConfigInt::ConfigInt(){}
 
 ConfigInt::ConfigInt(Parser &p): _n(p.jobs()),_bigM(1000000), _T(p.getHorizon()), _r(p.nOfRes()), model(env),  S(env, p.jobs()), constraints(env), x(env, p.jobs()){
