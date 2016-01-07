@@ -1,5 +1,5 @@
 /*
- * File:   Time_indexed.hpp
+ * File:   ConfigInt.hpp
  * Author: Charlie Brown
  *
  * Created on 5 janvier 2016, 17:58
