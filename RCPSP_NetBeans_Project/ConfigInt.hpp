@@ -17,7 +17,8 @@ struct conf{
   int y;
 };
 
-typedef vector<conf> config;
+
+typedef vector<vector<int> > Config;
 
 
 
@@ -25,32 +26,33 @@ class ConfigInt{
 public:
   ConfigInt();
   ConfigInt(Parser &p);
-  void solve(Parser& p);
-  
+  void solve(Parser &p);
+
   int bigM();
-  
-  
+
+
 protected:
   IloObjective objective();
   void addConstraints(Parser &p);
-  
-  config createConfig();
-  
+
+  void createConfig();
+  void addConfig();
+
 private:
   IloEnv env;
   IloModel model;
-  IloRangeArray constraints; 
+  IloRangeArray constraints;
   IloArray <IloArray<IloNumVar> > x;
   IloArray<IloNumVar> S;
-  
 
 
-  
+
+  Config F;
   int _bigM;
-  int _n; 
+  int _n;
   int _T;
   int _r  ;
-  
+
 };
 
 
