@@ -27,7 +27,10 @@ ConfigInt::ConfigInt(){}
 
 
 
-ConfigInt::ConfigInt(Parser &p): _n(p.jobs()),_bigM(1000000), _T(p.getHorizon()), _r(p.nOfRes()), model(env),  S(env, p.jobs()), constraints(env), x(env, p.jobs()){
+ConfigInt::ConfigInt(Parser &p):
+_n(p.jobs()),_bigM(1000000), _T(p.getHorizon()),
+_r(p.nOfRes()), model(env),  S(env, p.jobs()), constraints(env), x(env, p.jobs()),
+ _b(p.reqJobsMach()), _p(p.durationsVector()), _B(p.resAvail()){
   for (int i = 0; i < _n; i++) {
     x[i] = IloArray<IloNumVar> (env, _n);
     char name1[256];
@@ -68,7 +71,7 @@ vector<int> ConfigInt::Slate(){
 }
 
 void ConfigInt::addConstraints(Parser &p){
-  for(int i = 0; i < _n; i++){ 
+  for(int i = 0; i < _n; i++){
     IloExpr e00(env);
     e00 = x[i][i];
     model.add(e00 == 0);
@@ -112,22 +115,65 @@ void ConfigInt::addConstraints(Parser &p){
 
 
 
-void ConfigInt::addConfig(){
-  //createConfig();
-  /*
-  for (size_t i = 0;  i< count; ++) {
-    for (size_t j = 0; j < count; ++) {
+void ConfigInt::createConfig(IloNumArray v){
 
-      for(int k= 0; k < F.size(); k++){
-      //        int i = F[k].x;
-      //      int j = F[k].y;
-
-        constraints.add(x[i][j] >= 1);
+  vector< vector <int> > tmp;
+  vector< vector <int> > conf2;
+  for(int i = 0; i< v.length(); i++){
+    tmp[i].push_back(i);
+    for(int j = 0; j<v.length(); j++){
+      if(i != j){
+        if((S[j] <= v[i]) && (v[j] + _p[j] > v[i])){
+          tmp[i].push_back(j);
+        }
       }
     }
-  }*/
-  return;
+  }
+
+
+
+  for(int j = 0; j<tmp.size(); j++){
+    for(int k =0; k < _r; k++){
+      int sum = 0;
+
+      for(int i = 0; i < tmp[j].size(); i++){
+        int index = tmp[j][i];
+        sum += _b[index][k];
+      }
+
+      if(sum >= _B[k]){
+        conf2.push_back(tmp[j]);
+
+        for(int a = 0; a < conf2.size(); a++){
+          IloExpr e(env);
+          for(int b = 0; b < conf2[a].size(); b++){
+            for(int c = 0; c < conf2[a].size(); c++){
+              if(b != c){
+                e += x[conf2[a][b]][conf2[a][c]];
+              }
+            }
+          }
+          model.add(e >= 1);
+        }
+
+
+
+
+
+      }
+    }
+  }
+
+
+
+  if(!conf2.empty()){
+    for(int k =0; k<conf2.size(); k++){
+      F.push_back(conf2[k]);
+    }
+  }
 }
+
+
 
 
 
@@ -155,6 +201,13 @@ void ConfigInt::addConfig(){
      cout <<"\n\nSOL= " <<cplex.getObjValue()<<"\n\n";
      cout << cplex.getObjValue() << endl;
 
+     IloNumArray v(env);
+     cplex.getValues(v, S);
+
+
+     createConfig(v);
+
+     cplex.solve();
 
 
      cout << "\n\nSOL= " << cplex.getObjValue() << "\n\n";

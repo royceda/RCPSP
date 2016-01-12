@@ -36,7 +36,7 @@ protected:
   IloObjective objective();
   void addConstraints(Parser &p);
 
-  void createConfig();
+  void createConfig(IloNumArray v);
   void addConfig();
 
 private:
@@ -44,11 +44,14 @@ private:
   IloModel model;
   IloRangeArray constraints;
   IloArray <IloArray<IloNumVar> > x;
-  IloArray<IloNumVar> S;
+  IloNumVarArray S;
 
   vector<int> _Slate;
 
   Config F;
+  vector<int> _p;
+  vector<int> _B;
+  vector< vector<int > > _b;
   int _bigM;
   int _n;
   int _T;
