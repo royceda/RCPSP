@@ -119,12 +119,14 @@ void ConfigInt::createConfig(IloNumArray v){
 
   vector< vector <int> > tmp;
   vector< vector <int> > conf2;
-  for(int i = 0; i< v.length(); i++){
+  for(int i = 0; i< _n; i++){
     tmp[i].push_back(i);
-    for(int j = 0; j<v.length(); j++){
+    for(int j = 0; j<_n; j++){
       if(i != j){
-        if((S[j] <= v[i]) && (v[j] + _p[j] > v[i])){
-          tmp[i].push_back(j);
+        if(v[j] <= v[i]){
+          if (v[j] + _p[j] > v[i]){
+            tmp[i].push_back(j);
+          }
         }
       }
     }
