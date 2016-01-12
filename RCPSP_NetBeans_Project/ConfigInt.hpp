@@ -30,6 +30,7 @@ public:
 
   int bigM();
 
+  vector<int> Slate();
 
 protected:
   IloObjective objective();
@@ -45,7 +46,7 @@ private:
   IloArray <IloArray<IloNumVar> > x;
   IloArray<IloNumVar> S;
 
-
+  vector<int> _Slate;
 
   Config F;
   int _bigM;

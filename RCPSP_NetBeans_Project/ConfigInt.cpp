@@ -63,6 +63,10 @@ int ConfigInt::bigM(){
 }
 
 
+vector<int> ConfigInt::Slate(){
+  return _Slate;
+}
+
 void ConfigInt::addConstraints(Parser &p){
   for(int i = 0; i < _n; i++){ 
     IloExpr e00(env);
@@ -122,7 +126,8 @@ void ConfigInt::addConfig(){
       }
     }
   }*/
-  }
+  return;
+}
 
 
 
@@ -138,6 +143,9 @@ void ConfigInt::addConfig(){
 
      IloCplex cplex(model);
      cplex.solve();
+
+
+
      cout<<"OK\n";
 
    //addConfig(p);
