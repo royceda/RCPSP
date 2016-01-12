@@ -1,0 +1,104 @@
+
+%%RAPPORT PROJET%
+
+\documentclass[french,a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[frenchb]{babel}
+\usepackage{amsmath,amsthm,amssymb}
+%%\usepackage{algorithm,algorithmic}
+\usepackage{dtklogos}
+\usepackage[left=3cm,right=3cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{url}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\setlength{\headheight}{13pt}
+\usepackage{graphicx}
+\graphicspath{{./}}
+\usepackage[vlined,lined,boxed,french,longend]{algorithm2e}
+\usepackage{hyperref}
+\usepackage[title,toc,page,header]{appendix} 
+\renewcommand{\appendixtocname}{Table des Annexes} %Indique le nom de la tables des annexes dans la toc 
+\renewcommand{\appendixpagename}{Annexes} %Nom du titre de la page des annexes 
+\newcommand{\algorithmicwhile}{\textbf{Tant\ que}}
+
+\usepackage{pgf}
+\geometry{hmargin=2cm,vmargin=2cm}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{multicol}
+\usepackage{mathrsfs}
+\usepackage{calrsfs}\usepackage{cases}
+\usepackage{vmargin}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{arrows,calc,patterns, shapes}
+\usepackage{supertabular}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage[section]{placeins}
+\usepackage{pdfpages}
+\usepackage[colorinlistoftodos]{todonotes}
+
+
+\presetkeys{todonotes}{fancyline, color=blue!20}{}
+\lstset{language=C}
+
+
+\usepackage[normalem]{ulem}
+
+\pagestyle{fancy}
+
+%%%% options %%%%%
+\headwidth = \textwidth
+\title{Ordonnancement de trains}
+\author{Yoann Janvier\\ Reda Bouldjetia}
+% * <saponace@gmail.com> 2015-04-16T15:37:04.075Z:
+%
+% 
+%
+\renewcommand{\headrulewidth}{1pt}
+\fancyhead[L]{\textsc{GOPP Rapport de projet}}
+\fancyhead[R]{\small{\leftmark}}
+
+\renewcommand{\footrulewidth}{1pt}
+\fancyfoot[R]{Université de Bordeaux} 
+\fancyfoot[L]{}
+\fancyfoot[C]{page {\thepage}}
+
+
+
+\pagenumbering{arabic}
+
+\begin{document}
+\begin{figure}
+\begin{center}
+    \includegraphics[width=0.30\linewidth, height=0.20\linewidth]{logo_UnivBdx.jpeg}
+\end{center}
+\end{figure}
+
+\begin{center} \rule{\linewidth}{0.5pt}
+\end{center}
+\begin{huge} \textbf{\underline{Gestion des Opérations et Planification de la Production} \\Méthodes de résolution pour le RCPSP} \end{huge}
+\begin{flushright} \begin{huge} Rapport de projet\end{huge} \end{flushright}
+
+\begin{center} \rule{\linewidth}{0.5pt} \end{center}
+
+\begin{flushleft} \large{AUTEUR : } \end{flushleft}
+
+JANVIER Yoann\\
+BOULDJETIA Reda
+
+
+\vspace{300pt}
+
+\begin{center} {Master 2, Recherche Opérationnelle et Aide à la Décision}\\
+\end{center}
+\newpage
+\tableofcontents
+\newpage
+
+\section{Introduction}
+Lors de ce projet, nous devions implémenter plusieurs méthodes afin de résoudre des instances du problèmes RCPSP. Nous avons ainsi mis en oeuvre des méthodes basées sur différentes formulations du problème. Concernant l'aspect programmation, nous avons utiliser le langage \textit{C++} ainsi que la bibliothèque \textit{concert} de \textit{C++} afin de pouvoir créer un modèle \textit{Cplex} ????????
+
+\end{document}
