@@ -147,7 +147,7 @@ bool ConfigInt::createConfig(IloNumArray v){
         sum += _b[index][k];
       }
 
-      if(sum >= _B[k]){
+      if(sum > _B[k]){
         boolNewConf = true;
         conf2.push_back(tmp[j]);
       }

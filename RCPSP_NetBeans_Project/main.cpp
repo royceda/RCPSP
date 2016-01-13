@@ -8,7 +8,7 @@
 int main(int argc, char **argv){
 
   //Parser* p = new Parser("perso.sm");
-  Parser* p = new Parser("j30.sm/j3012_10.sm");
+  Parser* p = new Parser("j30.sm/j301_1.sm");
   //Parser* p = new Parser("j120.sm/perso.sm");
   
   //Parser* p = new Parser("perso.sm");

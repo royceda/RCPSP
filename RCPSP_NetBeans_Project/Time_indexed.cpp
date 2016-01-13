@@ -223,11 +223,11 @@ void Time_indexed::solve(Parser& p) {
     //cplex.getDuals(dual, constraints);
     //cout << dual << endl;
 
-    for (int i = 0; i < _n; i++) {
-      for(int t = 0; t<_T; t++){
-        cout << "y[" << i << "]["<<t<<"] = " << cplex.getValue(y[i][t]) << "\n";
-      }
-    }
+    // for (int i = 0; i < _n; i++) {
+    //   for(int t = 0; t<_T; t++){
+    //     cout << "y[" << i << "]["<<t<<"] = " << cplex.getValue(y[i][t]) << "\n";
+    //   }
+    // }
 
     cplex.exportModel("test.lp");
     env.end();
