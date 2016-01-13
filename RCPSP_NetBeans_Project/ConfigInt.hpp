@@ -36,7 +36,7 @@ protected:
   IloObjective objective();
   void addConstraints(Parser &p);
 
-  void createConfig(IloNumArray v);
+  bool createConfig(IloNumArray v);
   void addConfig();
 
 private:

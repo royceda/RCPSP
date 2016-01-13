@@ -30,7 +30,7 @@ ConfigInt::ConfigInt(){}
 ConfigInt::ConfigInt(Parser &p):
 _n(p.jobs()),_bigM(1000000), _T(p.getHorizon()),
 _r(p.nOfRes()), model(env),  S(env, p.jobs()), constraints(env), x(env, p.jobs()),
- _b(p.reqJobsMach()), _p(p.durationsVector()), _B(p.resAvail()){
+_b(p.reqJobsMach()), _p(p.durationsVector()), _B(p.resAvail()){
   for (int i = 0; i < _n; i++) {
     x[i] = IloArray<IloNumVar> (env, _n);
     char name1[256];
@@ -115,24 +115,28 @@ void ConfigInt::addConstraints(Parser &p){
 
 
 
-void ConfigInt::createConfig(IloNumArray v){
-
+bool ConfigInt::createConfig(IloNumArray v){
+  bool boolNewConf = false;
+  cout<<"......\n";
   vector< vector <int> > tmp;
   vector< vector <int> > conf2;
-  for(int i = 0; i< _n; i++){
-    tmp[i].push_back(i);
-    for(int j = 0; j<_n; j++){
+  for(int i = 1; i< _n-1; i++){
+    vector<int> tmpI;
+    tmpI.push_back(i);
+    for(int j = 1; j<_n-1; j++){
       if(i != j){
         if(v[j] <= v[i]){
-          if (v[j] + _p[j] > v[i]){
-            tmp[i].push_back(j);
+          if ((v[j] + _p[j]) > v[i]){
+            tmpI.push_back(j);
           }
         }
       }
     }
+    tmp.push_back(tmpI);
+    tmpI.clear();
   }
 
-
+  cout<<"MM\n";
 
   for(int j = 0; j<tmp.size(); j++){
     for(int k =0; k < _r; k++){
@@ -144,70 +148,76 @@ void ConfigInt::createConfig(IloNumArray v){
       }
 
       if(sum >= _B[k]){
+        boolNewConf = true;
         conf2.push_back(tmp[j]);
-
-        for(int a = 0; a < conf2.size(); a++){
-          IloExpr e(env);
-          for(int b = 0; b < conf2[a].size(); b++){
-            for(int c = 0; c < conf2[a].size(); c++){
-              if(b != c){
-                e += x[conf2[a][b]][conf2[a][c]];
-              }
-            }
-          }
-          model.add(e >= 1);
-        }
-
-
-
-
-
       }
     }
   }
+  for(int a = 0; a < conf2.size(); a++){
+    IloExpr e(env);
+    for(int b = 0; b < conf2[a].size(); b++){
+      for(int c = 0; c < conf2[a].size(); c++){
+        if(b != c){
+          e += x[conf2[a][b]][conf2[a][c]];
+        }
+      }
+    }
+    //cout << "e = "<<e<<"\n";
+    model.add(e >= 1);
+    e.end();
+  }
 
 
+  
+
+  cout<<"ALMOST\n";
 
   if(!conf2.empty()){
     for(int k =0; k<conf2.size(); k++){
       F.push_back(conf2[k]);
     }
   }
+  return boolNewConf;
 }
 
 
 
 
 
-  void ConfigInt::solve(Parser& p){
-    try{
-     model.add(objective());
-     cout << "objectif"<< endl;
+void ConfigInt::solve(Parser& p){
+  try{
+   model.add(objective());
+   cout << "objectif"<< endl;
 
-     addConstraints(p);
-     cout << "const"<< endl;
+   addConstraints(p);
+   cout << "const"<< endl;
 
    /*premier solve*/
 
-     IloCplex cplex(model);
-     cplex.solve();
+   IloCplex cplex(model);
+   cplex.solve();
 
 
 
-     cout<<"OK\n";
+   cout<<"OK\n";
 
    //addConfig(p);
    /*second solve*/
    //IloCplex cplex(model);
    //cplex.solve();
-     cout <<"\n\nSOL= " <<cplex.getObjValue()<<"\n\n";
-     cout << cplex.getObjValue() << endl;
+   cout <<"\n\nSOL= " <<cplex.getObjValue()<<"\n\n";
+   cout << cplex.getObjValue() << endl;
 
+   bool finished= false;
+   while(!finished){
      IloNumArray v(env);
+     cout <<"OK\n";
      cplex.getValues(v, S);
+     cout<<"OK2\n";
 
-
-     createConfig(v);
+    finished = !createConfig(v);
+     v.end();
+     cout<<"OK2\n";
 
      cplex.solve();
 
@@ -219,8 +229,9 @@ void ConfigInt::createConfig(IloNumArray v){
 
      cout << cplex.getObjValue() << endl;
    }
-   catch (IloException& e) {
-    cerr << "ERROR : " << e << "\n";
-  }
+ }
+ catch (IloException& e) {
+  cerr << "ERROR : " << e << "\n";
+}
 
 }
