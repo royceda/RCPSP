@@ -10,7 +10,9 @@
 
 #include "Parser.h"
 #include <ilcplex/ilocplex.h>
-
+#include <fstream>
+#include <string>
+#include <list>
 
 struct conf{
   int x;
@@ -29,8 +31,11 @@ public:
   void solve(Parser &p);
 
   int bigM();
+  IloNumArray v();
 
   vector<int> Slate();
+
+  void writeSolution(string fileName);
 
 protected:
   IloObjective objective();
@@ -39,12 +44,15 @@ protected:
   bool createConfig(IloNumArray v);
   void addConfig();
 
+
 private:
   IloEnv env;
   IloModel model;
   IloRangeArray constraints;
   IloArray <IloArray<IloNumVar> > x;
   IloNumVarArray S;
+  IloNumArray _v;
+  list<int> _vSol; 
 
   vector<int> _Slate;
 

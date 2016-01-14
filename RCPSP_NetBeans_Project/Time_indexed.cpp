@@ -229,6 +229,13 @@ void Time_indexed::solve(Parser& p) {
     //   }
     // }
 
+    // for(int i = 0; i<_n; i++){
+    //   IloNumArray yy(env);
+    //   cplex.getValues(yy,y[i]);
+    //   _ySol.push_back(yy);
+    //   yy.end(); 
+    // }
+
     cplex.exportModel("test.lp");
     env.end();
     
@@ -236,4 +243,24 @@ void Time_indexed::solve(Parser& p) {
     cerr << "ERROR : "<< e<<"\n";
   }
   
+}
+
+void Time_indexed::writeSolution(string fileName){
+  ofstream file(fileName.c_str(), ios::out);
+  cout<<"file OKKK\n";
+  if(file){
+    for(int i =0; i< _n; i++){
+      for(int t = 0; t<_T; t++){
+        if(_ySol.front().front() == 1)
+      file << _ySol.front().front() << "\n";
+      cout << i<< " : "<<_ySol.front().front()<<"\n";
+      }
+    _ySol.pop_front();
+    }
+
+    file.close();
+  }
+  else
+    cerr << "Error while trying to write the file\n";
+
 }

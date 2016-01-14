@@ -10,6 +10,7 @@
 
 #include "Parser.h"
 #include <ilcplex/ilocplex.h>
+#include <list> 
 
 class Time_indexed{
 public:
@@ -43,6 +44,8 @@ protected:
      * @return 
      */
     void createFeasibleConfig(Parser &p);
+
+    void writeSolution(string fileName);
     
 private:
   IloEnv env;
@@ -51,6 +54,7 @@ private:
   IloArray <IloArray<IloNumVar> > y;
   IloArray <IloArray<IloNumVar> > xi;
    
+  list<list<int> >_ySol;
     //all feasible config
     vector<int> feasibleConfig;
     

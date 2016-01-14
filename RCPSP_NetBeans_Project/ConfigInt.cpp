@@ -65,6 +65,9 @@ int ConfigInt::bigM(){
   return _bigM;
 }
 
+IloNumArray ConfigInt::v(){
+  return _v;
+}
 
 vector<int> ConfigInt::Slate(){
   return _Slate;
@@ -210,13 +213,13 @@ void ConfigInt::solve(Parser& p){
 
    bool finished= false;
    while(!finished){
-     IloNumArray v(env);
+     IloNumArray _v(env);
      cout <<"OK\n";
-     cplex.getValues(v, S);
+     cplex.getValues(_v, S);
      cout<<"OK2\n";
 
-    finished = !createConfig(v);
-     v.end();
+     finished = !createConfig(_v);
+     _v.end();
      cout<<"OK2\n";
 
      cplex.solve();
@@ -229,9 +232,37 @@ void ConfigInt::solve(Parser& p){
 
      cout << cplex.getObjValue() << endl;
    }
+   IloNumArray _v(env);
+   cplex.getValues(_v, S);
+   cout<<"v NULL?? "<<_v<<" and _n = "<<_n<<"\n";
+   for(int i = 0; i < _n; i++){
+      _vSol.push_back(_v[i]);
+   }
  }
  catch (IloException& e) {
   cerr << "ERROR : " << e << "\n";
-}
+  }
 
 }
+
+
+void ConfigInt::writeSolution(string fileName){
+  //string fname = "sol.txt";
+  ofstream file(fileName.c_str(), ios::out);
+  cout<<"file OKKK\n";
+  if(file){
+    for(int i =0; i< _n; i++){
+      file << _vSol.front() << "\n";
+      cout << i<< " : "<<_vSol.front()<<"\n";
+      _vSol.pop_front();
+    }
+
+   file.close();
+ }
+ else
+  cerr << "Error while trying to write the file\n";
+
+}
+
+
+

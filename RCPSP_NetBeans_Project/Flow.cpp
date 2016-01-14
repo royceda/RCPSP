@@ -39,7 +39,7 @@ void Flow::solve(Parser& p) {
       /**Variables**/
 		IloArray<IloArray<IloNumVar> > x(env, p.jobs());
       //vector<vector<int> > x;
-		IloArray<IloNumVar> S(env, p.jobs());
+		IloNumVarArray S(env, p.jobs());
 		IloArray<IloArray <IloArray<IloNumVar> > > f(env, p.jobs());
 
       //NumMatrix f(env, p.jobs());
@@ -85,7 +85,7 @@ void Flow::solve(Parser& p) {
 			for (int j = 0; j < p.sucVector()[i].size(); j++) {
 				IloExpr e0(env);
 				e0 = x[i][p.sucVector()[i][j]];
-	  			model.add(e0 == 1);
+				model.add(e0 == 1);
 				//constraints.add(e0 == 1);
 				e0.end();
 			}
@@ -95,7 +95,7 @@ void Flow::solve(Parser& p) {
 			for (unsigned int j = i + 1; j < p.jobs(); j++) {
 				IloExpr e1(env);
 				e1 = x[i][j] + x[j][i];
-	  			model.add(e1 <= 1);
+				model.add(e1 <= 1);
 				//constraints.add(e1 <= 1);
 				e1.end();
 			}
@@ -105,7 +105,7 @@ void Flow::solve(Parser& p) {
 				for (unsigned int k = 0; k < p.jobs(); k++) {
 					IloExpr e2(env);
 					e2 = x[i][j] + x[j][k] - x[i][k];
-	    			model.add(e2 <= 1);
+					model.add(e2 <= 1);
 					//constraints.add(e2 <= 1);
 					e2.end();
 				}
@@ -131,7 +131,7 @@ void Flow::solve(Parser& p) {
 				for (int j = 1; j < p.jobs(); j++) {
 					e += f[i][j][k];
 				}
-	  			model.add(e == p.reqJobsMach()[i][k]);
+				model.add(e == p.reqJobsMach()[i][k]);
 				//constraints.add(e == p.reqJobsMach()[i][k]);
 				e.end();
 			}
@@ -141,7 +141,7 @@ void Flow::solve(Parser& p) {
 				for (int j = 0; j < p.jobs()-1; j++) {
 					ee += f[j][i][k];
 				}
-	  			model.add(ee == p.reqJobsMach()[i][k]);
+				model.add(ee == p.reqJobsMach()[i][k]);
 				//constraints.add(ee == p.reqJobsMach()[i][k]);
 				ee.end();
 
@@ -191,12 +191,34 @@ void Flow::solve(Parser& p) {
 		}
 
 		cout << cplex.getObjValue() << endl;
-
-
+		IloNumArray _v(env);
+cplex.getValues(_v, S);
+		cout<<"v NULL?? "<<_v<<" and _n = "<< p.jobs()<<"\n";
+		for(int i = 0; i < p.jobs(); i++){
+			_vSol.push_back(_v[i]);
+		}
+		_v.end();
 		env.end();
 
 	} catch (IloException& e) {
 		cerr << "ERROR : " << e << "\n";
 	}
+
+}
+
+void Flow::writeSolution(Parser& p, string fileName){
+	ofstream file(fileName.c_str(), ios::out);
+	if(file){
+		for(int i =0; i< p.jobs(); i++){
+			file << _vSol.front() << "\n";
+			cout << i<< " : "<<_vSol.front()<<"\n";
+			_vSol.pop_front();
+		}
+
+		file.close();
+	}
+	else
+		cerr << "Error while trying to write the file\n";
+
 
 }

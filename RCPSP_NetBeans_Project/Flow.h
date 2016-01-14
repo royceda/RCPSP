@@ -10,6 +10,7 @@
 
 #include "Parser.h"
 #include <ilcplex/ilocplex.h>
+#include <list>
 
 class Flow{
 public:
@@ -19,12 +20,13 @@ public:
     
     int getBigM();
     void solve(Parser& p);
-
-    
     void heurSolve(Parser& p);
+
+    void writeSolution(Parser& p, string fileName);
 
 private:
     int _bigM;
+    list<int> _vSol;
 
 };
 
