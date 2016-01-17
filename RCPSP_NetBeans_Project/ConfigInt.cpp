@@ -254,8 +254,29 @@ void ConfigInt::writeSolution(string fileName){
   ofstream file(fileName.c_str(), ios::out);
   //cout<<"file OKKK\n";
   if(file){
+    file << _n << " "<< _r << "\n";
+
+    //line2
+    for(int i = 0; i<_r; i++){
+      file << i << " ";
+    }
+    file << "\n";
+
+    //line3
+    for(int i = 0; i<_r; i++){
+      file << _B[i] << " ";
+    }
+    file << "\n";
+
+    //line4
+    for(int i = 0; i<_n; i++){
+      file << i << " ";
+    }
+    file << "\n";
+
+    //line 5
     for(int i =0; i< _n; i++){
-      file << _vSol.front() << "\n";
+      file << _vSol.front() << " ";
       //cout << i<< " : "<<_vSol.front()<<"\n";
       _vSol.pop_front();
     }
