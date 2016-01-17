@@ -28,7 +28,7 @@ int main(int argc, char **argv){
     for(int j =0; j< p->jobs(); j++)
     cout << p->sucVector()[i][j] << endl;
   */
-  cout<<"##########TIMEIND##########\n";
+  /* cout<<"##########TIMEIND##########\n";
   Parser* p1 = new Parser("j120.sm/perso.sm");
   MyClock timeC;
   timeC.start();
@@ -37,7 +37,7 @@ int main(int argc, char **argv){
   timeC.end();
   cout << "ELAPSED TIME IN TIME_INDEXED : "<<timeC.elapsedTime()<<"\n";
   //t->writeSolution("solTime.txt");
-
+  */
   cout<<"##########CONFIGINT##########\n";
   Parser* p2 = new Parser("j120.sm/perso.sm");
   MyClock confC;
