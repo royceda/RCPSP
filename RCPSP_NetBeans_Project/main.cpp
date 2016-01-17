@@ -49,6 +49,6 @@ int main(int argc, char **argv){
   cout << "ELAPSED TIME IN CONFINT : "<<confC.elapsedTime()<<"\n";
 
 
-  system("java -jar ./JavaGantt/Gantt.jar")
+  system("java -jar ./JavaGantt/Gantt.jar");
   return 0;
 }
