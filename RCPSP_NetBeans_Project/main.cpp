@@ -48,5 +48,7 @@ int main(int argc, char **argv){
   conf->writeSolution("solConfInt.txt");
   cout << "ELAPSED TIME IN CONFINT : "<<confC.elapsedTime()<<"\n";
 
+
+  system("java -jar ./JavaGantt/Gantt.jar")
   return 0;
 }
