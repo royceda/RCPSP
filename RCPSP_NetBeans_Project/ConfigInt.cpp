@@ -120,7 +120,7 @@ void ConfigInt::addConstraints(Parser &p){
 
 bool ConfigInt::createConfig(IloNumArray v){
   bool boolNewConf = false;
-  cout<<"......\n";
+  //cout<<"......\n";
   vector< vector <int> > tmp;
   vector< vector <int> > conf2;
   for(int i = 1; i< _n-1; i++){
@@ -139,7 +139,6 @@ bool ConfigInt::createConfig(IloNumArray v){
     tmpI.clear();
   }
 
-  cout<<"MM\n";
 
   for(int j = 0; j<tmp.size(); j++){
     for(int k =0; k < _r; k++){
@@ -171,10 +170,6 @@ bool ConfigInt::createConfig(IloNumArray v){
   }
 
 
-  
-
-  cout<<"ALMOST\n";
-
   if(!conf2.empty()){
     for(int k =0; k<conf2.size(); k++){
       F.push_back(conf2[k]);
@@ -190,11 +185,10 @@ bool ConfigInt::createConfig(IloNumArray v){
 void ConfigInt::solve(Parser& p){
   try{
    model.add(objective());
-   cout << "objectif"<< endl;
+   //cout << "objectif"<< endl;
 
    addConstraints(p);
-   cout << "const"<< endl;
-
+   //cout << "const"<< endl;
    /*premier solve*/
 
    IloCplex cplex(model);
@@ -214,13 +208,13 @@ void ConfigInt::solve(Parser& p){
    bool finished= false;
    while(!finished){
      IloNumArray _v(env);
-     cout <<"OK\n";
+     //cout <<"OK\n";
      cplex.getValues(_v, S);
-     cout<<"OK2\n";
+     //cout<<"OK2\n";
 
      finished = !createConfig(_v);
      _v.end();
-     cout<<"OK2\n";
+     //cout<<"OK2\n";
 
      cplex.solve();
 
@@ -234,7 +228,7 @@ void ConfigInt::solve(Parser& p){
    }
    IloNumArray _v(env);
    cplex.getValues(_v, S);
-   cout<<"v NULL?? "<<_v<<" and _n = "<<_n<<"\n";
+   //cout<<"v NULL?? "<<_v<<" and _n = "<<_n<<"\n";
    for(int i = 0; i < _n; i++){
       _vSol.push_back(_v[i]);
    }
@@ -249,11 +243,11 @@ void ConfigInt::solve(Parser& p){
 void ConfigInt::writeSolution(string fileName){
   //string fname = "sol.txt";
   ofstream file(fileName.c_str(), ios::out);
-  cout<<"file OKKK\n";
+  //cout<<"file OKKK\n";
   if(file){
     for(int i =0; i< _n; i++){
       file << _vSol.front() << "\n";
-      cout << i<< " : "<<_vSol.front()<<"\n";
+      //cout << i<< " : "<<_vSol.front()<<"\n";
       _vSol.pop_front();
     }
 

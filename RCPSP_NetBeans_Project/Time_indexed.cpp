@@ -12,12 +12,23 @@ using namespace  std;
 
 Time_indexed::Time_indexed(){}
 
-Time_indexed::Time_indexed(Parser &p): _n(p.jobs()), _T(p.getHorizon()), _r(p.nOfRes()), model(env), constraints(env), y(env, _n){
+Time_indexed::Time_indexed(Parser &p): _n(p.jobs()), _T(p.getHorizon()), _r(p.nOfRes()){
+
+
+
+IloModel modelTmp(env);
+model = modelTmp;
+
+IloRangeArray iloConst(env);
+constraints = iloConst;
+
+IloArray<IloArray<IloNumVar> > yTmp(env, _n);
+y = yTmp;
 
   for( int i = 0; i <_n; i++){
     y[i] = IloArray<IloNumVar> (env, _T);
     for(int t = 0; t < _T; t++){
-      y[i][t] = IloNumVar (env, 0,1, ILOBOOL);
+      y[i][t] = IloNumVar(env, 0,1, ILOBOOL);
     }
   }
 }
@@ -30,7 +41,7 @@ IloObjective Time_indexed::objective(IloEnv &env){
     e0 +=  y[(_n)-1][t] * t;
   }
 
-  cout << "obj : DONE !!!!" << endl;  
+  //cout << "obj : DONE !!!!" << endl;  
   IloObjective obj(env, e0, IloObjective::Minimize, "OBJ"); //sum
 
   model.add(obj);
@@ -53,7 +64,7 @@ void Time_indexed::addConstraints(Parser &p){
     // model.add(constrints);
     e1.end();
   }
-  cout << "ct1 : DONE !!!!" << endl;  
+  //cout << "ct1 : DONE !!!!" << endl;  
 
 
   /*Precedence*/
@@ -69,7 +80,7 @@ void Time_indexed::addConstraints(Parser &p){
       e2.end(); 
     } 
   }
-  cout << "ct2 : DONE !!!!" << endl;  
+  //cout << "ct2 : DONE !!!!" << endl;  
 
   /*Ressources*/    
 
@@ -96,7 +107,7 @@ void Time_indexed::addConstraints(Parser &p){
    }
  }
   // model.add(constraints);
- cout << "ct3 : DONE !!!!" << endl; 
+ //cout << "ct3 : DONE !!!!" << endl; 
  
   /*def y*/
   //done !!
@@ -128,7 +139,7 @@ vector<int> Time_indexed::createFeasibleConfig(Parser &p, int j){
     }
     
   /*Contrainte 1*/
-    for(int i; i < _n; i++){
+    for(int i= 0; i < _n; i++){
       IloExpr e1(env);
       vector<int> feasibleConf(createFeasibleConfig(p, i));
       for(int l = 0; l <   feasibleConf.size(); l++){
@@ -209,7 +220,6 @@ void Time_indexed::solve(Parser& p) {
 
 
     cout <<"\n\nSOL= " <<cplex.getObjValue()<<"\n\n";
-    cout << cplex.getObjValue() << endl;
     // for (int i = 0; i < _n; i++) {
     //   for( int t = 0; t <_T; t++){
     //     cout<<i<<" à "<<t<<" : "<<S[i*(_T-1) +t];   
@@ -229,12 +239,16 @@ void Time_indexed::solve(Parser& p) {
     //   }
     // }
 
-    // for(int i = 0; i<_n; i++){
-    //   IloNumArray yy(env);
-    //   cplex.getValues(yy,y[i]);
-    //   _ySol.push_back(yy);
-    //   yy.end(); 
-    // }
+    for(int i = 0; i<_n; i++){
+      IloArray<IloNum> yy(env,_T);
+      for(int t = 0; t<_T; t++){
+        IloNum yTmp;
+        yTmp = cplex.getValue(y[i][t]);
+        yy[t] = yTmp;
+      }
+      _ySol.push_back(yy);
+      yy.end(); 
+    }
 
     cplex.exportModel("test.lp");
     env.end();
@@ -247,13 +261,15 @@ void Time_indexed::solve(Parser& p) {
 
 void Time_indexed::writeSolution(string fileName){
   ofstream file(fileName.c_str(), ios::out);
-  cout<<"file OKKK\n";
   if(file){
     for(int i =0; i< _n; i++){
       for(int t = 0; t<_T; t++){
-        if(_ySol.front().front() == 1)
-      file << _ySol.front().front() << "\n";
-      cout << i<< " : "<<_ySol.front().front()<<"\n";
+        //cout <<"BEFORE TEST\n";
+        cout <<"_ySol = "<<(_ySol).size()<<"\n";
+        cout << "qsxqs = "<<(_ySol.front()).getSize() <<"\n";
+        if((_ySol.front())[t] == 1)
+      file << (_ySol.front())[t]<< "\n";
+      //cout << i<< " : "<<_ySol.front().front()<<"\n";
       }
     _ySol.pop_front();
     }

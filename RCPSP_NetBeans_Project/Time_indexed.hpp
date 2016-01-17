@@ -17,7 +17,7 @@ public:
     Time_indexed();
     Time_indexed(Parser &p);
     void solve(Parser& p);
-    
+        void writeSolution(string fileName);
  
     
     
@@ -45,7 +45,7 @@ protected:
      */
     void createFeasibleConfig(Parser &p);
 
-    void writeSolution(string fileName);
+
     
 private:
   IloEnv env;
@@ -54,7 +54,7 @@ private:
   IloArray <IloArray<IloNumVar> > y;
   IloArray <IloArray<IloNumVar> > xi;
    
-  list<list<int> >_ySol;
+  list<IloArray<IloNum> >_ySol;
     //all feasible config
     vector<int> feasibleConfig;
     
