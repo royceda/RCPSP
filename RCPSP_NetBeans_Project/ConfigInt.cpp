@@ -240,6 +240,15 @@ void ConfigInt::solve(Parser& p){
 }
 
 
+
+//line1 n r
+//line2 R1 R2 ...
+//line3 B1 B2 ...
+//line4 j1 j2 ..
+//line5 S1 S2 ...
+//line6 p1 p2 ...
+//line7 to r  b11 b12 ...
+
 void ConfigInt::writeSolution(string fileName){
   //string fname = "sol.txt";
   ofstream file(fileName.c_str(), ios::out);
@@ -251,12 +260,24 @@ void ConfigInt::writeSolution(string fileName){
       _vSol.pop_front();
     }
 
+    //line6
+    for(int i = 0; i<_n; i++){
+      file << _p[i] << " ";
+    }
+    file << "\n";
+
+    //from line7
+    for(int i= 0; i<_r; i++){
+      for(int j = 0; j<_n; j++){
+        file << _b[i][j] << " ";
+      }
+      file << "\n";
+    }
+
+
    file.close();
  }
  else
   cerr << "Error while trying to write the file\n";
 
 }
-
-
-
