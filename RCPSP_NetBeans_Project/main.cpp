@@ -9,10 +9,12 @@ int main(int argc, char **argv){
 
   //Parser* p = new Parser("perso.sm");
   //Parser* p = new Parser("j30.sm/j301_1.sm");
+  cout<<"##########PARSING##########\n";
   Parser* p = new Parser("j120.sm/perso.sm");
   
   //Parser* p = new Parser("perso.sm");
   
+  cout<<"##########FLOW##########\n";
   Flow* fl = new Flow();
   fl->heurSolve(*p);
   fl->solve(*p);
@@ -22,13 +24,16 @@ int main(int argc, char **argv){
     for(int j =0; j< p->jobs(); j++)
     cout << p->sucVector()[i][j] << endl;
   */
-  Parser* p1 = new Parser("perso.sm");
-  Time_indexed *t = new Time_indexed(*p);
-  t->solve(*p);
+  cout<<"##########TIMEIND##########\n";
+  Parser* p1 = new Parser("j120.sm/perso.sm");
+  Time_indexed *t = new Time_indexed(*p1);
+  t->solve(*p1);
   //t->writeSolution("solTime.txt");
 
-  ConfigInt * conf = new ConfigInt(*p);
-  conf->solve(*p);
+  cout<<"##########CONFIGINT##########\n";
+  Parser* p2 = new Parser("j120.sm/perso.sm");
+  ConfigInt * conf = new ConfigInt(*p2);
+  conf->solve(*p2);
   conf->writeSolution("solConfInt.txt");
 
   return 0;
